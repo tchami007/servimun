@@ -67,7 +67,7 @@ namespace ServiMun.Migrations
                     b.HasIndex("NumeroDocumentoContribuyente")
                         .IsUnique();
 
-                    b.ToTable("Contribuyentes", (string)null);
+                    b.ToTable("Contribuyentes");
                 });
 
             modelBuilder.Entity("ServiMun.Models.PadronBoleta", b =>
@@ -93,14 +93,11 @@ namespace ServiMun.Migrations
                     b.Property<DateTime>("Vencimiento")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Vencimiento2")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("IdBoleta");
 
                     b.HasIndex("NumeroPadron");
 
-                    b.ToTable("PadronBoletas", (string)null);
+                    b.ToTable("PadronBoletas");
                 });
 
             modelBuilder.Entity("ServiMun.Models.PadronContribuyente", b =>
@@ -123,7 +120,7 @@ namespace ServiMun.Migrations
 
                     b.HasIndex("IdTributoMunicipal");
 
-                    b.ToTable("PadronContribuyentes", (string)null);
+                    b.ToTable("PadronContribuyentes");
                 });
 
             modelBuilder.Entity("ServiMun.Models.TributoMunicipal", b =>
@@ -149,7 +146,7 @@ namespace ServiMun.Migrations
 
                     b.HasKey("IdTributo");
 
-                    b.ToTable("TributosMunicipales", (string)null);
+                    b.ToTable("TributosMunicipales");
                 });
 
             modelBuilder.Entity("ServiMun.Models.PadronBoleta", b =>

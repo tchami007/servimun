@@ -14,8 +14,12 @@ namespace ServiMun.Controllers
             _service = service;
         }
         [HttpPost]
-        public async Task<ActionResult<Contribuyente>> AltaNuevoContribuyente(ContribuyenteDTO contribuyenteDTO)
+        public async Task<ActionResult<Contribuyente>> AltaNuevoContribuyente([FromBody] ContribuyenteDTO contribuyenteDTO)
         {
+            if (contribuyenteDTO == null)
+            {
+                return BadRequest("contribuyenteDTO is null.");
+            }
 
             var contribuyente = new Contribuyente
             {
@@ -40,8 +44,14 @@ namespace ServiMun.Controllers
             return NoContent();
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> ModificacionContribuyente(int id, ContribuyenteDTO contribuyenteDTO)
+        public async Task<IActionResult> ModificacionContribuyente(int id, [FromBody] ContribuyenteDTO contribuyenteDTO)
         {
+
+            if (id != contribuyenteDTO.IdContribuyente)
+            {
+                return BadRequest("ID mismatch");
+            }
+
             if (id != contribuyenteDTO.IdContribuyente) return BadRequest("El id recibido no coincide con id del cuerpo de la solicitud");
 
             var contribuyente = new Contribuyente {

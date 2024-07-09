@@ -20,6 +20,5 @@ namespace ServiMun.Models
         public Boolean Pagado { get; set; }
         [ForeignKey("NumeroPadron")]
         public virtual PadronContribuyente PadronContribuyente { get; set; }
-
     }
 }

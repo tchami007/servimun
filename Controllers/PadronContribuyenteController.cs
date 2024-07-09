@@ -52,15 +52,20 @@ namespace ServiMun.Controllers
 
             var padron = padronContribuyente.FirstOrDefault();
 
-            PadronContribuyente pad = new PadronContribuyente
+            if(padron == null)
             {
-                IdContribuyente = padron.IdContribuyente,
-                IdTributoMunicipal = padron.IdTributoMunicipal,
-                NumeroPadron = padron.NumeroPadron,
-                Estado = padron.Estado
-            };
-            
-            await _service.ModificacionContribuyentePadron(pad);
+                return NotFound();
+            }
+
+            padron.NumeroPadron = padronContribuyenteDTO.NumeroPadron;
+            padron.Estado = padronContribuyenteDTO.Estado;
+
+            var result = await _service.ModificacionContribuyentePadron(padron);
+            if (!result)
+            {
+                return BadRequest("No se puede modificar el NumeroPadron porque está relacionado con PadronBoleta.");
+            }
+
             return NoContent();
         }
 

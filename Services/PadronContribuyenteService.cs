@@ -30,11 +30,36 @@ namespace ServiMun.Services
             return true;
         }
 
-        public async Task<PadronContribuyente> ModificacionContribuyentePadron(PadronContribuyente padronContribuyente)
+        public async Task<bool> ModificacionContribuyentePadron(PadronContribuyenteGetDTO padronDTO)
         {
-            _context.Entry(padronContribuyente).State = EntityState.Modified;
+            // Verificar si el NumeroPadron existe en PadronBoleta
+            var padronExists = await _context.PadronBoletas.AnyAsync(pb => pb.NumeroPadron == padronDTO.NumeroPadron);
+            if (padronExists)
+            {
+                return false;
+            }
+
+            // Eliminar el registro existente
+            var existingPadron = await _context.PadronContribuyentes.FindAsync(padronDTO.IdContribuyente, padronDTO.IdTributoMunicipal);
+            if (existingPadron != null)
+            {
+                _context.PadronContribuyentes.Remove(existingPadron);
+                await _context.SaveChangesAsync();
+            }
+
+            // Conversion de DTO a Model
+            PadronContribuyente pad = new PadronContribuyente()
+            {
+                IdContribuyente = padronDTO.IdContribuyente,
+                IdTributoMunicipal = padronDTO.IdTributoMunicipal,
+                NumeroPadron = padronDTO.NumeroPadron,
+                Estado = padronDTO.Estado
+            };
+
+            // Agregar el nuevo registro
+            _context.PadronContribuyentes.Add(pad);
             await _context.SaveChangesAsync();
-            return padronContribuyente;
+            return true;
         }
 
         public async Task<IEnumerable<PadronContribuyenteGetDTO>> RecuperaPadronContribuyente(string numeroDocumentoContribuyente)

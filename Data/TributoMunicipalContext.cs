@@ -70,8 +70,8 @@ namespace ServiMun.Data
             modelBuilder.Entity<PadronContribuyente>()
                 .HasKey(pc => new { pc.IdContribuyente, pc.IdTributoMunicipal });
 
-            modelBuilder.Entity<PadronContribuyente>()
-                .HasAlternateKey(pc => pc.NumeroPadron);
+            //modelBuilder.Entity<PadronContribuyente>()
+            //    .HasAlternateKey(pc => pc.NumeroPadron);
 
             modelBuilder.Entity<PadronContribuyente>()
                 .HasOne(pc => pc.Contribuyente)
