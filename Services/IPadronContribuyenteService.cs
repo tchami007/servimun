@@ -2,6 +2,10 @@
 
 namespace ServiMun.Services
 {
+
+    /// <summary>
+    /// Interfase de Servicio para Padron-Contribuyente
+    /// </summary>
     public interface IPadronContribuyenteService
     {
         Task<PadronContribuyente> AltaContribuyentePadron(PadronContribuyente padronContribuyente);

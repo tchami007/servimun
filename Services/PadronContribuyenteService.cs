@@ -30,6 +30,12 @@ namespace ServiMun.Services
             return true;
         }
 
+
+        /// <summary>
+        /// Modifica un elemento de la asociacion Padron-Contribuyente
+        /// </summary>
+        /// <param name="padronDTO">Elemento de tipo PadronContribuyenteGetDTO de transferencia de la asociacion</param>
+        /// <returns>Valor booleano qie indica si se realizo la modificacion</returns>
         public async Task<bool> ModificacionContribuyentePadron(PadronContribuyenteGetDTO padronDTO)
         {
             // Verificar si el NumeroPadron existe en PadronBoleta

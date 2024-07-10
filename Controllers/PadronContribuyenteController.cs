@@ -38,6 +38,14 @@ namespace ServiMun.Controllers
             return NoContent();
         }
 
+
+        /// <summary>
+        /// Api de modificacion de enlace Padron-Contribuyente
+        /// </summary>
+        /// <param name="idContribuyente">Elemento entero, identificador de contribuyente</param>
+        /// <param name="idTributoMunicipal">Elemento entero, identificador del tributo municipal</param>
+        /// <param name="padronContribuyenteDTO">Elemento de tipo PadronContribuyente con el resto de atributos a modificar</param>
+        /// <returns></returns>
         [HttpPut("{idContribuyente}/{idTributoMunicipal}")]
         public async Task<IActionResult> ModificacionContribuyentePadron(int idContribuyente, int idTributoMunicipal, [FromBody] PadronContribuyenteDTO padronContribuyenteDTO)
         {
