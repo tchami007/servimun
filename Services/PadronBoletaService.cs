@@ -49,6 +49,8 @@ namespace ServiMun.Services
             encontrado.Importe = padronBoleta.Importe;
             encontrado.Vencimiento = padronBoleta.Vencimiento;
             encontrado.Pagado = padronBoleta.Pagado;
+            encontrado.Vencimiento2 = padronBoleta.Vencimiento2;
+            encontrado.Importe2 = padronBoleta.Importe2;
 
             await _context.SaveChangesAsync();
 
@@ -73,7 +75,9 @@ namespace ServiMun.Services
                 Periodo = padronBoleta.Periodo,
                 Importe = padronBoleta.Importe,
                 Vencimiento = padronBoleta.Vencimiento,
-                Pagado = padronBoleta.Pagado
+                Pagado = padronBoleta.Pagado,
+                Vencimiento2 = padronBoleta.Vencimiento2,
+                Importe2 = padronBoleta.Importe2
             };
         }
 
@@ -87,7 +91,9 @@ namespace ServiMun.Services
                     Periodo = pc.Periodo,
                     Vencimiento= pc.Vencimiento,
                     Importe = pc.Importe,
-                    Pagado = pc.Pagado
+                    Pagado = pc.Pagado,
+                    Vencimiento2= pc.Vencimiento2,
+                    Importe2 = pc.Importe2
                 }
                 )
                 .Where( pc => pc.IdBoleta == id)
@@ -107,6 +113,8 @@ namespace ServiMun.Services
                     Importe = pb.Importe,
                     Vencimiento = pb.Vencimiento,
                     Pagado = pb.Pagado,
+                    Vencimiento2= pb.Vencimiento2,
+                    Importe2 = pb.Importe2,
                     Contribuyente = new ContribuyenteDTO
                     {
                         IdContribuyente = pb.PadronContribuyente.IdContribuyente,

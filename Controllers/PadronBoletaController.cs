@@ -23,7 +23,9 @@ public class PadronBoletaController : ControllerBase
             Importe = padronBoletaDTO.Importe,
             Vencimiento = padronBoletaDTO.Vencimiento,
             Periodo = padronBoletaDTO.Periodo,
-            Pagado = padronBoletaDTO.Pagado
+            Pagado = padronBoletaDTO.Pagado,
+            Vencimiento2 = padronBoletaDTO.Vencimiento2,
+            Importe2 = padronBoletaDTO.Importe2
 
         };
 
@@ -62,7 +64,9 @@ public class PadronBoletaController : ControllerBase
             Importe = padronBoletaDTO.Importe,
             Vencimiento = padronBoletaDTO.Vencimiento,
             Periodo = padronBoletaDTO.Periodo,
-            Pagado = padronBoletaDTO.Pagado
+            Pagado = padronBoletaDTO.Pagado,
+            Vencimiento2 = padronBoletaDTO.Vencimiento2,
+            Importe2 = padronBoletaDTO.Importe2
         };
 
         var result = await _padronBoletaService.ModificacionPadronBoleta(id, padronBoleta);
@@ -77,11 +81,22 @@ public class PadronBoletaController : ControllerBase
     [HttpPut("pago/{id}")]
     public async Task<IActionResult> PagoPadronBoleta(int id)
     {
-        var result = await _padronBoletaService.PagoPadronBoleta(id);
-        if (result == null)
+        var boleta = await _padronBoletaService.RecuperarPadronBoletaPorId(id);
+
+        if (boleta == null)
         {
             return NotFound();
         }
+
+        var encontrado = boleta.FirstOrDefault();
+
+        if (encontrado.Pagado)
+        {
+            return BadRequest("El servicio ya fue pagado");
+        }
+
+        var result = await _padronBoletaService.PagoPadronBoleta(id);
+
         return Ok(result);
     }
 
@@ -101,6 +116,7 @@ public class PadronBoletaController : ControllerBase
     [HttpGet("numeroPadron/{numeroPadron}")]
     public async Task<ActionResult> RecuperarPadronBoletaPorNumeroPadron(int numeroPadron)
     {
+
         var result = await _padronBoletaService.RecuperarPadronBoletaPorNumeroPadron(numeroPadron);
         if (result == null || !result.Any())
         {

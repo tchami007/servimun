@@ -18,6 +18,9 @@ namespace ServiMun.Models
         public DateTime Vencimiento { get; set; }
         [Required]
         public Boolean Pagado { get; set; }
+        public DateTime Vencimiento2 { get; set; }
+        [Column(TypeName = "decimal(12, 2)")]
+        public decimal Importe2 { get; set; }
         [ForeignKey("NumeroPadron")]
         public virtual PadronContribuyente PadronContribuyente { get; set; }
     }
