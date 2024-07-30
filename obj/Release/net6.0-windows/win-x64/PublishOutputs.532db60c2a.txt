@@ -1,9 +1,9 @@
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\ServiMun.exe
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\appsettings.Development.json
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\appsettings.json
-C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\ServiMun.dll
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\ServiMun.runtimeconfig.json
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\ServiMun.pdb
+C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\Microsoft.Data.SqlClient.SNI.dll
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\Microsoft.Data.SqlClient.dll
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\Microsoft.EntityFrameworkCore.dll
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\Microsoft.EntityFrameworkCore.Abstractions.dll
@@ -27,5 +27,5 @@ C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\System.Runtime.Cac
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\System.Security.Cryptography.ProtectedData.dll
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\System.Security.Permissions.dll
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\System.Windows.Extensions.dll
-C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\Microsoft.Data.SqlClient.SNI.dll
+C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\ServiMun.dll
 C:\NET\ServiMun\obj\Release\net6.0-windows\win-x64\PubTmp\Out\ServiMun.deps.json

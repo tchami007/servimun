@@ -78,7 +78,7 @@ public class PadronBoletaController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("pago/{id}")]
+    [HttpPut("pagoPorId/{id}")]
     public async Task<IActionResult> PagoPadronBoleta(int id)
     {
         var boleta = await _padronBoletaService.RecuperarPadronBoletaPorId(id);
@@ -96,6 +96,28 @@ public class PadronBoletaController : ControllerBase
         }
 
         var result = await _padronBoletaService.PagoPadronBoleta(id);
+
+        return Ok(result);
+    }
+
+    [HttpPut("pagoPorNumeroPadronPeriodo/{numeroPadron}/{periodo}")]
+    public async Task<IActionResult> PagoPadronBoleta(int numeroPadron, int periodo)
+    {
+        var boleta = await _padronBoletaService.RecuperarPadronBoletaPorNumeroPadronPeriodo(numeroPadron,periodo);
+
+        if (boleta == null)
+        {
+            return NotFound();
+        }
+
+        var encontrado = boleta.FirstOrDefault();
+
+        if (encontrado.Pagado)
+        {
+            return BadRequest("El servicio ya fue pagado");
+        }
+
+        var result = await _padronBoletaService.PagoPadronBoleta(encontrado.IdBoleta);
 
         return Ok(result);
     }
@@ -135,4 +157,17 @@ public class PadronBoletaController : ControllerBase
         }
         return Ok(result);
     }
+
+    [HttpGet("padronPeriodo/{numeroPadron}/{periodo}")]
+    public async Task<ActionResult> RecuperarPadronBoletaPorNumeroPadronPeriod(int numeroPadron, int periodo)
+    {
+
+        var result = await _padronBoletaService.RecuperarPadronBoletaPorNumeroPadronPeriodo(numeroPadron, periodo);
+        if (result == null || !result.Any())
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
+
 }

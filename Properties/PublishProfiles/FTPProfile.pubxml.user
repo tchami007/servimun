@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAk+smykKabEW3q1rR4CYr8wAAAAACAAAAAAAQZgAAAAEAACAAAADU2mLwuWHHcrWtEm4pNCVWqhZo/xjXbS3egnFxP8RtUgAAAAAOgAAAAAIAACAAAADWIcreqzErnpmMWLDNblmrp7RtdhQTKj4bscVqSrhWaCAAAABF8J8sP+LqnwIryP/DeijFDcGXuwT6ZTi/9GOSSMgKWEAAAADkw5Fl38YWdrSNcPwkWogUHIFpva1BP1KwFOWr+oi8UmEdLlmJCfPFKPpzJNowvym7TcXhDOTgCgl0Y8VTJ98R</EncryptedPassword>
+    <_PublishTargetUrl>ftp://155.254.244.40/www.ServiMun.somee.com</_PublishTargetUrl>
+    <History>True|2024-07-30T00:51:07.4598182Z;False|2024-07-29T21:47:32.8800508-03:00;True|2024-07-29T16:42:15.5318118-03:00;True|2024-07-26T17:14:08.9938070-03:00;True|2024-07-26T16:47:02.9223929-03:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="appsettings.Development.json">
+      <publishTime>06/15/2024 11:49:11</publishTime>
+    </File>
+    <File Include="appsettings.json">
+      <publishTime>07/28/2024 18:27:57</publishTime>
+    </File>
+    <File Include="Microsoft.Data.SqlClient.dll">
+      <publishTime>07/29/2024 21:48:57</publishTime>
+    </File>
+    <File Include="Microsoft.Data.SqlClient.SNI.dll">
+      <publishTime>10/20/2020 15:13:26</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Abstractions.dll">
+      <publishTime>07/29/2024 21:48:58</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.dll">
+      <publishTime>07/29/2024 21:48:58</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Relational.dll">
+      <publishTime>07/29/2024 21:48:59</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.SqlServer.dll">
+      <publishTime>07/29/2024 21:49:00</publishTime>
+    </File>
+    <File Include="Microsoft.Identity.Client.dll">
+      <publishTime>07/29/2024 21:49:01</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.JsonWebTokens.dll">
+      <publishTime>07/29/2024 21:49:01</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Logging.dll">
+      <publishTime>07/29/2024 21:49:01</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Protocols.dll">
+      <publishTime>07/29/2024 21:49:02</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll">
+      <publishTime>07/29/2024 21:49:02</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Tokens.dll">
+      <publishTime>07/29/2024 21:49:03</publishTime>
+    </File>
+    <File Include="Microsoft.OpenApi.dll">
+      <publishTime>07/29/2024 21:49:03</publishTime>
+    </File>
+    <File Include="Microsoft.Win32.SystemEvents.dll">
+      <publishTime>07/29/2024 21:49:03</publishTime>
+    </File>
+    <File Include="ServiMun.deps.json">
+      <publishTime>07/29/2024 21:49:07</publishTime>
+    </File>
+    <File Include="ServiMun.dll">
+      <publishTime>07/29/2024 21:49:07</publishTime>
+    </File>
+    <File Include="ServiMun.exe">
+      <publishTime>07/29/2024 21:48:56</publishTime>
+    </File>
+    <File Include="ServiMun.pdb">
+      <publishTime>07/29/2024 21:48:56</publishTime>
+    </File>
+    <File Include="ServiMun.runtimeconfig.json">
+      <publishTime>07/26/2024 17:11:51</publishTime>
+    </File>
+    <File Include="Swashbuckle.AspNetCore.Swagger.dll">
+      <publishTime>07/29/2024 21:49:03</publishTime>
+    </File>
+    <File Include="Swashbuckle.AspNetCore.SwaggerGen.dll">
+      <publishTime>07/29/2024 21:49:04</publishTime>
+    </File>
+    <File Include="Swashbuckle.AspNetCore.SwaggerUI.dll">
+      <publishTime>07/29/2024 21:49:04</publishTime>
+    </File>
+    <File Include="System.Configuration.ConfigurationManager.dll">
+      <publishTime>07/29/2024 21:49:05</publishTime>
+    </File>
+    <File Include="System.Drawing.Common.dll">
+      <publishTime>07/29/2024 21:49:05</publishTime>
+    </File>
+    <File Include="System.IdentityModel.Tokens.Jwt.dll">
+      <publishTime>07/29/2024 21:49:05</publishTime>
+    </File>
+    <File Include="System.Runtime.Caching.dll">
+      <publishTime>07/29/2024 21:49:06</publishTime>
+    </File>
+    <File Include="System.Security.Cryptography.ProtectedData.dll">
+      <publishTime>07/29/2024 21:49:06</publishTime>
+    </File>
+    <File Include="System.Security.Permissions.dll">
+      <publishTime>07/29/2024 21:49:06</publishTime>
+    </File>
+    <File Include="System.Windows.Extensions.dll">
+      <publishTime>07/29/2024 21:49:07</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>07/29/2024 21:49:07</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

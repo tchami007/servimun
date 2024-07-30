@@ -143,6 +143,38 @@ namespace ServiMun.Services
                     Importe = pb.Importe,
                     Vencimiento = pb.Vencimiento,
                     Pagado = pb.Pagado,
+                    Vencimiento2 = pb.Vencimiento2,
+                    Importe2 = pb.Importe2,
+                    Contribuyente = new ContribuyenteDTO
+                    {
+                        IdContribuyente = pb.PadronContribuyente.IdContribuyente,
+                        NumeroDocumentoContribuyente = pb.PadronContribuyente.Contribuyente.NumeroDocumentoContribuyente,
+                        ApellidoNombreContribuyente = pb.PadronContribuyente.Contribuyente.ApellidoNombreContribuyente,
+                        DomicilioCalleContribuyente = pb.PadronContribuyente.Contribuyente.DomicilioCalleContribuyente,
+                        DomicilioNumeroContribuyente = pb.PadronContribuyente.Contribuyente.DomicilioNumeroContribuyente,
+                        TelefonoContribuyente = pb.PadronContribuyente.Contribuyente.TelefonoContribuyente,
+                        SexoContribuyente = pb.PadronContribuyente.Contribuyente.SexoContribuyente,
+                        FechaNacimientoContribuyente = pb.PadronContribuyente.Contribuyente.FechaNacimientoContribuyente
+                    }
+                })
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PadronBoletaGetDTO>> RecuperarPadronBoletaPorNumeroPadronPeriodo(int numeroPadron, int periodo)
+        {
+            return await _context.PadronBoletas
+                .Where(pb => pb.NumeroPadron == numeroPadron && pb.Periodo == periodo)
+                .OrderBy(pb => pb.Periodo)
+                .Select(pb => new PadronBoletaGetDTO
+                {
+                    IdBoleta = pb.IdBoleta,
+                    NumeroPadron = pb.NumeroPadron,
+                    Periodo = pb.Periodo,
+                    Importe = pb.Importe,
+                    Vencimiento = pb.Vencimiento,
+                    Pagado = pb.Pagado,
+                    Vencimiento2 = pb.Vencimiento2,
+                    Importe2 = pb.Importe2,
                     Contribuyente = new ContribuyenteDTO
                     {
                         IdContribuyente = pb.PadronContribuyente.IdContribuyente,

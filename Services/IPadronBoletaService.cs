@@ -11,6 +11,7 @@ namespace ServiMun.Services
         Task<IEnumerable<PadronBoletaDTO>> RecuperarPadronBoletaPorId(int id);
         Task<IEnumerable<PadronBoletaGetDTO>> RecuperarPadronBoletaPorNumeroPadron(int numeroPadron);
         Task<IEnumerable<PadronBoletaGetDTO>> RecuperarPadronBoletaPorTributoPeriodo(int idTributo, int periodo);
+        Task<IEnumerable<PadronBoletaGetDTO>> RecuperarPadronBoletaPorNumeroPadronPeriodo(int numeroPadron, int periodo);
     }
 
 }
