@@ -1,0 +1,107 @@
+Tributo Municipal
+-----------------
+
+Como desarrolador .net, elabora un proyecto web api con version 6.0 para la siguiente funcionalidad:
+
+- Un servicio que mantenga los datos (CRUD) para una entidad llamada TributoMunicipal que tiene los siguientes datos: idTributo, NombreTributo, Estado(activo o inactivo)
+- Los metodos que debe disponer el servicio son: AltaNuevoTributoMunicipal, BajaTributoMunicipal, ModificacionTributoMunicipal, RecuperacionTributoMunicipal, RecuperacionTodosTributoMunicipal.
+- Crea las clases e interfases para cada capa: Data, Models, Services y Controllers
+- Crea el codigo (o las modificaciones) para la clase de arranque (program en mi caso)
+- Crea las modificaciones necesarias para appsettings 
+- Realiza las previsiones para servicios que explicare en futuros prompst
+
+Contribuyente
+-------------
+
+Como desarrolador .net, agrega al proyecto web api del punto anterior siguiente funcionalidad:
+
+- Un servicio que mantenga los datos (CRUD) para una entidad llamada Contribuyente que tiene los siguientes datos: idContribuyente, NumeroDocumentoContribuyente, ApellidoNombreContribuyente, DomicilioCalleContribuyente, DomicilioNumeroContribuyente, TelefonoContribuyente, SexoContribuyente, FechaNacimientoContribuyente
+
+- Ten en cuenta los siguientes anotaciones para el modelo:
+	- IdContribuyente es la clave principal de la entidad
+	- NumeroDocumentoContribuyente es un numero de CUIL que debe ser unico en la entidad
+	- SexoContribuyente puede se M o F dependiendo si es masculino o femenino
+	- Los datos de ApellidoNombre, DomicilioCalle, DomicilioNumero, FechaNacimientoContribuyente no deben ser nulos
+
+- Los metodos que debe disponer el servicio son: AltaNuevoContribuyente, BajaContribuyente, ModificacionContribuyente, RecuperacionContribuyente, RecuperacionTodosContribuyente
+- Crea las clases e interfases para cada capa: Data, Models, Services y Controllers
+- Crea el codigo (o las modificaciones) para la clase de arranque (program en mi caso)
+- Crea las modificaciones necesarias para appsettings 
+- Realiza las previsiones para servicios que explicare en futuros prompts
+
+
+Padrón Contribuyente
+--------------------
+
+
+Como desarrolador .net, agrega al proyecto web api del punto anterior siguiente funcionalidad:
+
+- Un servicio que mantenga los datos del padron de contribuyentes. El padron es una vinculacion entre contribuyente y tributo municipal. La relacion es de tipo M a N:
+
+	- 1 contribuyente puede pertenecer a mas de un tributo
+	- 1 tributo puede tener mas de un contribuyente
+	
+- Por lo tanto los datos del padron son los que siguen: IdContribuyente, IdTributoMunicipal, NumeroPadron, Estado (activo o inactivo)
+- Ten en cuenta que:
+
+	- IdContribuyente y IdTributo son clave compuesta, no se pueden repetir en la entidad
+	- NroPadron es un Numero que se mantiene por el IdTributo. Por ejemplo, todos el idTributo=1 que corresponde a tasa cementerio en TributoMunicipal, tiene el mismo Numero Padron. Quizas hubiera sido mejor que sea un atributo de TributoMunicipal pero entiendo que tambien lo podemos manejar en el padron.
+
+- Los metodos que debe disponer el servicio son: AltaContribuyentePadron, BajaContribuyentePadron, ModificacionContribuyentePadron, RecuperaPadronContribuyente, RecuperaContribuyentePadron.
+- Donde  
+	- RecuperaPadronContribuyente devuelve todos los padrones donde se encuentra un contribuyente, identificado por su NumeroDocumentoContribuyente
+	- RecuperaContribuyentePadrom devuelve todos los contribuyente donde se encuentra un padron, identificado por su NumeroPadron
+
+- Crea las clases e interfases para cada capa: Data, Models, Services y Controllers
+- Crea el codigo (o las modificaciones) para la clase de arranque (program en mi caso)
+- Crea las modificaciones necesarias para appsettings 
+- Realiza las previsiones para servicios que explicare en futuros prompts
+
+Padrón Boleta
+-------------
+
+ades en tu modelo de Entity Framework.
+
+Como desarrollador .NET, para la entidad PadronBoleta con la siguiente definicion:
+
+    public class PadronBoleta
+    {
+        [Key]
+        public int IdBoleta { get; set; }
+        [Required]
+        public int NumeroPadron { get; set; }
+        [Required]
+        public int Periodo { get; set; } // Formato AAAAMM, por ejemplo, 202406 para junio de 2024
+        [Required]
+        public decimal Importe { get; set; }
+        [Required]
+        public DateTime Vencimiento { get; set; }
+        [Required]
+        public Boolean Pagado { get; set; }
+        [ForeignKey("NumeroPadron")]
+        public virtual PadronContribuyente PadronContribuyente { get; set; }
+
+    }
+	
+	Y con el siguiente contexto:
+	
+	            // Configuración para PadronBoleta
+            modelBuilder.Entity<PadronBoleta>()
+                .HasKey(pb => pb.IdBoleta);
+
+            modelBuilder.Entity<PadronBoleta>()
+                .HasOne(pb => pb.PadronContribuyente)
+                .WithMany(pc => pc.PadronBoletas)
+                .HasForeignKey(pb => pb.NumeroPadron)
+                .HasPrincipalKey(pc => pc.NumeroPadron);
+				
+Agrega al Proyecto WebApi los servicios para cubrir los siguientes metodo
+
+- AltaPadronBoleta
+- BajaPadronBoleta
+- ModificaciónPadronBoleta
+- PagoPadronBoleta: Cambia Pagado de la boleta de false a true
+- RecuperarPadronBoletaPorId
+- RecuperarPadronBoletaPorNumeroPadron: Recupera todos los PadronBoleta de un numero de padron, incluyendo todos los periodos, ordenando por periodos. Incluye Datos Contribuyente.
+- RecuperarPadronBoletaPorTributoPeriodo: Recupera todos los PadronBoleta de un tributo y de un periodo, ordenando por numero de padron.  Incluye Datos Contribuyente.
+

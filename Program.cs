@@ -23,7 +23,9 @@ builder.Services.AddScoped<IContribuyenteService, ContribuyenteService>();
 builder.Services.AddScoped<IPadronContribuyenteService, PadronContribuyenteService>();
 builder.Services.AddScoped<IPadronBoletaService, PadronBoletaService>();
 
-
+builder.Services.AddScoped<IServicioService, ServicioService>();
+builder.Services.AddScoped<IServicioClienteService, ServicioClienteService>();
+builder.Services.AddScoped<IServicioBoletaService, ServicioBoletaService>();
 
 builder.Services.AddControllers();
 

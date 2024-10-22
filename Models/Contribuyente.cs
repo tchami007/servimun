@@ -31,5 +31,8 @@ namespace ServiMun.Models
 
         //Relacion con Padron Contribuyente
         public ICollection<PadronContribuyente> PadronContribuyentes { get; set; }
+
+        //Relacion con Servicio Cliente
+        public ICollection<ServicioCliente> ServicioClientes{ get; set; }
     }
 }

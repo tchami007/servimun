@@ -1,0 +1,48 @@
+Como experto en .NET 6.0, para el siguiente codigo:
+
+using ServiMunGenerator;
+using ServiMunGenerator.Models;
+
+Console.WriteLine("Generador");
+Console.WriteLine("");
+
+Console.WriteLine("Ingrese la cantidad de Contribuyentes a generar:");
+int cantidad = int.Parse(Console.ReadLine());
+
+Console.WriteLine("Generando...");
+
+var lista = (List<ContribuyenteDTO>)ContribuyenteGenerator.GenerarContribuyentes(cantidad);
+
+int i = 0;
+
+foreach (var item in lista)
+{
+    Console.WriteLine($"{i} Documento={item.NumeroDocumentoContribuyente} ApellidoNombre={item.ApellidoNombreContribuyente} Domicilio={item.DomicilioCalleContribuyente} {item.DomicilioNumeroContribuyente} Nacimiento={item.FechaNacimientoContribuyente.ToString("dd/MM/yyyy")}");
+    if ( (i % 27) == 26)
+    {
+        Console.WriteLine("Presione una tecla para continuar...");
+        Console.ReadKey();
+    }
+    i++;
+}
+
+ContribuyenteApiClient contri = new ContribuyenteApiClient("http://www.ServiMun.somee.com");
+
+foreach (var item in lista)
+{
+    contri.AltaNuevoContribuyente(item);
+
+}
+
+Console.WriteLine("Presione una tecla para terminar...");
+Console.ReadKey();
+
+Elabora la clase Program para un proyecto de consola, que tenga una primera opcion llamada "1- Generacion de contribuyente" que llame al codigo de arriba.
+Luego agrega 3 opciones adicionales:
+
+- "2- Generar Padrones"
+- "3- Generar Boletas"
+- "99- Salir"
+
+El usuario debe elegir las opciones y la clase ira disparando los procesos vinculados a cada opcion. La opcion 99 debe terminar la ejecucion.
+Si crees que es mejor hace una clase con un metodo para la generacion de contribuyente, procede.

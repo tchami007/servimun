@@ -129,6 +129,97 @@ namespace ServiMun.Migrations
                     b.ToTable("PadronContribuyentes");
                 });
 
+            modelBuilder.Entity("ServiMun.Models.Servicio", b =>
+                {
+                    b.Property<int>("IdServicio")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdServicio"), 1L, 1);
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NombreServicio")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Sintetico")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("IdServicio");
+
+                    b.ToTable("Servicios");
+                });
+
+            modelBuilder.Entity("ServiMun.Models.ServicioBoleta", b =>
+                {
+                    b.Property<int>("IdBoletaServicio")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdBoletaServicio"), 1L, 1);
+
+                    b.Property<decimal>("Importe")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<decimal>("Importe2")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<int>("NumeroServicio")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Pagado")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Periodo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Vencimiento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Vencimiento2")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("IdBoletaServicio");
+
+                    b.HasIndex("NumeroServicio");
+
+                    b.ToTable("ServicioBoletas");
+                });
+
+            modelBuilder.Entity("ServiMun.Models.ServicioCliente", b =>
+                {
+                    b.Property<int>("IdContribuyente")
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("IdServicio")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NumeroCliente")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumeroServicio")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumeroTelefono")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdContribuyente", "IdServicio");
+
+                    b.HasIndex("IdServicio");
+
+                    b.ToTable("ServicioClientes");
+                });
+
             modelBuilder.Entity("ServiMun.Models.TributoMunicipal", b =>
                 {
                     b.Property<int>("IdTributo")
@@ -186,14 +277,57 @@ namespace ServiMun.Migrations
                     b.Navigation("TributoMunicipal");
                 });
 
+            modelBuilder.Entity("ServiMun.Models.ServicioBoleta", b =>
+                {
+                    b.HasOne("ServiMun.Models.ServicioCliente", "ServicioCliente")
+                        .WithMany("ServicioBoletas")
+                        .HasForeignKey("NumeroServicio")
+                        .HasPrincipalKey("NumeroServicio")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServicioCliente");
+                });
+
+            modelBuilder.Entity("ServiMun.Models.ServicioCliente", b =>
+                {
+                    b.HasOne("ServiMun.Models.Contribuyente", "Contribuyente")
+                        .WithMany("ServicioClientes")
+                        .HasForeignKey("IdContribuyente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiMun.Models.Servicio", "Servicio")
+                        .WithMany("ServicioClientes")
+                        .HasForeignKey("IdServicio")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contribuyente");
+
+                    b.Navigation("Servicio");
+                });
+
             modelBuilder.Entity("ServiMun.Models.Contribuyente", b =>
                 {
                     b.Navigation("PadronContribuyentes");
+
+                    b.Navigation("ServicioClientes");
                 });
 
             modelBuilder.Entity("ServiMun.Models.PadronContribuyente", b =>
                 {
                     b.Navigation("PadronBoletas");
+                });
+
+            modelBuilder.Entity("ServiMun.Models.Servicio", b =>
+                {
+                    b.Navigation("ServicioClientes");
+                });
+
+            modelBuilder.Entity("ServiMun.Models.ServicioCliente", b =>
+                {
+                    b.Navigation("ServicioBoletas");
                 });
 
             modelBuilder.Entity("ServiMun.Models.TributoMunicipal", b =>

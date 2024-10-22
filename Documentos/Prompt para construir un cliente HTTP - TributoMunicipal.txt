@@ -1,0 +1,75 @@
+Como experto en .NET 6.0, dada la siguiente definicion de un controlador API Rest para la entidad TributoMunicipal:
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TributoMunicipalController : ControllerBase
+    {
+        private readonly ITributoMunicipalService _service;
+
+        public TributoMunicipalController(ITributoMunicipalService service)
+        {
+            _service = service;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<TributoMunicipal>> AltaNuevoTributoMunicipal(TributoMunicipalDTO tributoDTO)
+        {
+            var tributoMunicipal = new TributoMunicipal { 
+            
+                NombreTributo = tributoDTO.NombreTributo,
+                Sintetico = tributoDTO.Sintetico,
+                Estado = tributoDTO.Estado
+            };
+
+            var nuevoTributo = await _service.AltaNuevoTributoMunicipal(tributoMunicipal);
+
+            return CreatedAtAction(nameof(RecuperacionTributoMunicipal), new { id = nuevoTributo.IdTributo }, nuevoTributo);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> BajaTributoMunicipal(int id)
+        {
+            var result = await _service.BajaTributoMunicipal(id);
+            if (!result) return NotFound();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ModificacionTributoMunicipal(int id, TributoMunicipalDTO tributoDTO)
+        {
+            if (id != tributoDTO.IdTributo) return BadRequest("El parametro id no coincide con el id del cuerpo de la solicitud");
+
+            var tributoMunicipal = new TributoMunicipal
+            {
+                IdTributo = id,
+                NombreTributo = tributoDTO.NombreTributo,
+                Sintetico = tributoDTO.Sintetico,
+                Estado = tributoDTO.Estado
+            };
+
+
+            await _service.ModificacionTributoMunicipal(tributoMunicipal);
+            return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TributoMunicipal>> RecuperacionTributoMunicipal(int id)
+        {
+            var tributo = await _service.RecuperacionTributoMunicipal(id);
+            if (tributo == null) return NotFound();
+            return tributo;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TributoMunicipal>>> RecuperacionTodosTributoMunicipal()
+        {
+            var tributos = await _service.RecuperacionTodosTributoMunicipal();
+            return Ok(tributos);
+        }
+    }
+
+Contruye una clase que actue como adaptador y me permita convocar los metodos de la API de una forma sencilla por medio de sus metodos. 
+- La clase debe tener en el constructor el seteo de los datos necesarios para la conexion.
+- La clase se usara dentro un proyecto de consola.
+- La url base es http://www.ServiMun.somee.com
+- Los paths de las api continuan con /api/TributoMunicipal

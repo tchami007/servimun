@@ -1,0 +1,110 @@
+Como mejorar los prompts en CHATGPT:
+
+1-Escribe el prompt que quieres mejorar
+
+2-Agrega: Actua como ingeniero de prompts
+
+3-Revisa el siguiente prompts:
+
+<prompt>
+
+4-Optimizalo para mejorarlo
+
+5-Hazme cualquier pregunta antes de proceder a resolverlo
+
+Ejemplo:
+
+Sigue las siguientes instrucciones:
+
+1- Actua como ingeniero de prompts
+
+2- Revisa el siguiente prompt:
+
+Como desarrollador .net necesito que plantees una WebAPI con .net 6.0, que resuelva el backend de clientes para una entidad financiera
+
+- Los clientes tiene un tipo de documento, numero de documento, Apellido, Nombre, Fecha de Nacimiento, pueden tener telefono, deben tener un email, condicion fiscal.
+
+- Los clientes deben tener un domicilio personal. Tambien pueden tener otros domicilios de otro tipo como laboral.
+
+- Los tipos de documentos usuales son DNI (hasta 8 digitos numericos), CUIT (11 digitos numericos), CUIL (11 digitos numericos). Luego podrian surgir otros.
+
+- Las condiciones fiscales usuales son IVA NORMAL, IVA Responsable Inscripto, IVA Responsable no inscripto
+
+- Los cliente deben tener una activad economica. 
+
+Tecnología: Utiliza Serilog para el logging y JWT para la autenticacion/autorizacion.
+
+Requisitos Adicionales: Me interesa que uses Clean Architecture.
+
+Ámbito de Detalle: Me gustaria que realices una reseña para verificar las tecnologias que usaras antes de resolverlo.
+
+Audiencia del Prompt: El prompt esta dirigido para desarrolladores .net 6.0 que estan aprendiendo la tecnologia. Nivel medio.
+
+Formato de la Respuesta: Cuando lo resuelvas necesitare los detalles para implementarlo: Estructura del Proyecto, Diagrama de tablas, Codigo fuente de las distintas clases que componen la solucion
+
+Requisitos Adicionales: La base de datos sera SQL Server, necesitaremos usar autenticacion a futuro, y debemos manejar un log de registros de eventos para errores y para casos de eventos exitosos, Utiliza validaciones con FluentValidation.
+
+3- Optimizalo para mejorarlo
+
+4-Hazme cualquier preguntas antes de proceder a resolverlo
+
+Avisame si necesitas resolver mas cuestiones.
+
+¿Deseas alguna tecnología específica o librería adicional que debería considerarse en la solución, como JWT para la autenticación o Serilog para el logging?
+¿Te gustaría que incluyera ejemplos de cómo implementar la autenticación y el manejo de logs, aunque sea a nivel básico, para cubrir los requisitos futuros?
+¿Hay algún requisito o restricción adicional que no se haya mencionado en el prompt original, como la arquitectura del proyecto (por ejemplo, Clean Architecture) o el uso de patrones específicos de diseño?
+
+
+Gracias por las especificaciones adicionales. Con estos detalles en mente, aquí tienes la versión optimizada del prompt:
+
+---
+
+
+Como desarrollador .NET, necesito que diseñes una WebAPI utilizando .NET 6.0 para gestionar el backend de clientes de una entidad financiera. La solución debe cumplir con los siguientes requisitos:
+
+1. Estructura del Cliente:
+   - Atributos obligatorios: Tipo de documento, número de documento, apellido, nombre, fecha de nacimiento, email, condición fiscal y actividad económica.
+   - Atributos opcionales: Teléfono.
+   - Domicilio: Cada cliente debe tener al menos un domicilio personal. Adicionalmente, puede tener otros domicilios de tipo laboral.
+
+2. Especificaciones de Tipos:
+   - Tipos de documentos: DNI (hasta 8 dígitos numéricos), CUIT (11 dígitos numéricos), CUIL (11 dígitos numéricos). Otros tipos de documentos podrían agregarse en el futuro.
+   - Condiciones fiscales: IVA Normal, IVA Responsable Inscripto, IVA Responsable No Inscripto.
+   
+3. Especificaciones de Domicilios:
+   - Atributos Obligario: Pais, Provincia, Localidad, Nombre de calle, Numero
+   - Atributos Opicionales: Numero de Piso, Numero o Letra de Departamento   
+   
+4. Especificaciones de Pais, Provincia y Localidad
+   - Atributo Obligatorio: Codigo de Pais (unico), Nombre 
+   
+   
+
+5. Requisitos Técnicos y Funcionales:
+   - Base de datos: SQL Server.
+   - Autenticación y Autorización: Utilizar JWT (JSON Web Tokens) para la autenticación y autorización de usuarios.
+   - Logging: Implementar el sistema de logging utilizando Serilog para registrar eventos de errores y eventos exitosos.
+   - Validaciones: Utilizar FluentValidation para validar los datos del cliente según los atributos especificados.
+
+6. Arquitectura del Proyecto:
+   - Emplear **Clean Architecture** para estructurar el proyecto, asegurando la separación de responsabilidades y facilitando la mantenibilidad y escalabilidad.
+   - Incluir los componentes habituales de la Clean Architecture como dominios, aplicaciones, infraestructura y presentación.
+
+5. Instrucciones para la Solución:
+   - Proporcionar una "reseña previa" sobre las tecnologías y patrones de diseño (como Clean Architecture, JWT, Serilog) que se utilizarán.
+   - Detallar la "estructura del proyecto", incluyendo el diseño del modelo de datos con un **diagrama de tablas**.
+   - Incluir el "código fuente completo" para la clase Cliente y Domicilio (controladores, modelos, servicios, validaciones, etc.), alineado con los principios de Clean Architecture.
+   - Mostrar ejemplos básicos de cómo implementar la autenticación con JWT y el logging con Serilog.
+
+Audiencia: Este ejercicio está dirigido a desarrolladores de nivel inicial que están aprendiendo .NET 6.0 y seguiran los ejemplos para completar el proyecto.
+
+Formato de la Respuesta:
+- Iniciar con una reseña de las tecnologías y patrones de diseño a utilizar.
+- Seguir con la estructura del proyecto y el diagrama de tablas.
+- Proveer el código fuente detallado para cada componente de la solución.
+
+---
+
+Este prompt ahora es más claro, está más enfocado y proporciona instrucciones detalladas sobre los requisitos y expectativas, lo cual facilitará una respuesta más estructurada y completa. 
+
+¿Hay algo más que te gustaría ajustar o añadir antes de proceder con la resolución?

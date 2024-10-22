@@ -1,0 +1,31 @@
+Como Desarrollador .net, elabora un diseño general de tipo WEB API de clases para una API que administra datos de Clientes, con las siguientes características (proximos chats):
+
+1) Estoy trabajando con .net 6.0
+
+2) La clase Cliente tiene los siguientes datos: 
+- NumeroDocumento: de tipo string de 11 longitud maximo, unico, requerido
+- Nombre: de tipo string, requerido
+- Apellido: de tipo string, requerido
+- Fecha de Nacimiento: de tipo datetime, requerido
+- Email: de tipo string, debe tener formato de correo electronico
+- Direccion: de tipo string
+- Telefono: de tipo string
+
+3) En el futuro, la entidad de Clientes podra tener referencia a otra entidad de Cuentas
+
+4) Por la razon 3, debes usar un DTO para los metodos, ya que el modelo de clientes tendra referencia a cuentas (y viceversa)
+
+5) Los metodos necesarios para la API son:
+- AddCliente
+- DeleteCliente
+- UpdateCliente
+- GetAllCliente
+- GetClienteById
+- GetClienteByNumeroDocumento
+
+
+Como salida espero: 
+- Las clases de las distintas capas (modelo, servicio, controller etc.), 
+- las interfases 
+- la clase program.cs
+- Otros metodos, como la configuracion de automapper

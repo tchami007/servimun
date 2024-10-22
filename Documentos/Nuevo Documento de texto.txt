@@ -1,0 +1,144 @@
+Como experto en .NET 6.0, dada la siguiente definicion de un controlador API Rest para la entidad PadronBoleta:
+
+[ApiController]
+[Route("api/[controller]")]
+public class PadronBoletaController : ControllerBase
+{
+    private readonly IPadronBoletaService _padronBoletaService;
+
+    public PadronBoletaController(IPadronBoletaService padronBoletaService)
+    {
+        _padronBoletaService = padronBoletaService;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AltaPadronBoleta([FromBody] PadronBoletaDTO padronBoletaDTO)
+
+    {
+        var nuevoPadronBoleta = new PadronBoleta
+        { 
+            NumeroPadron = padronBoletaDTO.NumeroPadron,
+            Importe = padronBoletaDTO.Importe,
+            Vencimiento = padronBoletaDTO.Vencimiento,
+            Periodo = padronBoletaDTO.Periodo,
+            Pagado = padronBoletaDTO.Pagado,
+            Vencimiento2 = padronBoletaDTO.Vencimiento2,
+            Importe2 = padronBoletaDTO.Importe2
+
+        };
+
+        var result = await _padronBoletaService.AltaPadronBoleta(nuevoPadronBoleta);
+
+        if (result == null)
+        {
+            return BadRequest();
+        }
+        return CreatedAtAction(nameof(RecuperarPadronBoletaPorId), new { id = result.IdBoleta }, result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> BajaPadronBoleta(int id)
+    {
+        var result = await _padronBoletaService.BajaPadronBoleta(id);
+        if (!result)
+        {
+            return NotFound();
+        }
+        return NoContent();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> ModificacionPadronBoleta(int id, [FromBody] PadronBoletaDTO padronBoletaDTO)
+    {
+        if (id != padronBoletaDTO.IdBoleta)
+        {
+            return BadRequest("El id del request no coincide con el id en el cuerpo de la solicitud");
+        }
+
+        var padronBoleta = new PadronBoleta
+        {
+            IdBoleta = id,
+            NumeroPadron = padronBoletaDTO.NumeroPadron,
+            Importe = padronBoletaDTO.Importe,
+            Vencimiento = padronBoletaDTO.Vencimiento,
+            Periodo = padronBoletaDTO.Periodo,
+            Pagado = padronBoletaDTO.Pagado,
+            Vencimiento2 = padronBoletaDTO.Vencimiento2,
+            Importe2 = padronBoletaDTO.Importe2
+        };
+
+        var result = await _padronBoletaService.ModificacionPadronBoleta(id, padronBoleta);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
+
+    [HttpPut("pago/{id}")]
+    public async Task<IActionResult> PagoPadronBoleta(int id)
+    {
+        var boleta = await _padronBoletaService.RecuperarPadronBoletaPorId(id);
+
+        if (boleta == null)
+        {
+            return NotFound();
+        }
+
+        var encontrado = boleta.FirstOrDefault();
+
+        if (encontrado.Pagado)
+        {
+            return BadRequest("El servicio ya fue pagado");
+        }
+
+        var result = await _padronBoletaService.PagoPadronBoleta(id);
+
+        return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<IEnumerable<PadronBoletaGetDTO>>> RecuperarPadronBoletaPorId(int id)
+    {
+        var boletas = await _padronBoletaService.RecuperarPadronBoletaPorId(id);
+
+        if (boletas == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(boletas);
+    }
+
+    [HttpGet("numeroPadron/{numeroPadron}")]
+    public async Task<ActionResult> RecuperarPadronBoletaPorNumeroPadron(int numeroPadron)
+    {
+
+        var result = await _padronBoletaService.RecuperarPadronBoletaPorNumeroPadron(numeroPadron);
+        if (result == null || !result.Any())
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
+
+    [HttpGet("tributoPeriodo/{idTributo}/{periodo}")]
+    public async Task<ActionResult> RecuperarPadronBoletaPorTributoPeriodo(int idTributo, int periodo)
+    {
+        var result = await _padronBoletaService.RecuperarPadronBoletaPorTributoPeriodo(idTributo, periodo);
+        if (result == null || !result.Any())
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
+
+
+Construye una clase que actue como adaptador (PadronBoletaApiClient) y me permita convocar los metodos de la API de una forma sencilla por medio de sus metodos. 
+- La clase debe tener en el constructor el seteo de los datos necesarios para la conexion.
+- La clase se usara dentro un proyecto de consola.
+- La url base es http://www.ServiMun.somee.com
+- Los paths de las api continuan con /api/PadronBoleta
+- Utiliza la libreria Json de NewtonSoft
+- Los metodos GET que devuelvan List y no IEnumerable
