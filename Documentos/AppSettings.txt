@@ -1,3 +1,3 @@
 Para somee
 
-    "DefaultConnection": "Server=TributoDB.mssql.somee.com;Database=TributoDB;user id=tchami007_SQLLogin_1;pwd=Luna2012%;",
+    "DefaultConnection": "Server=TributoDB.mssql.somee.com;Database=TributoDB;user id=<usuario>;pwd=<clave>;",
