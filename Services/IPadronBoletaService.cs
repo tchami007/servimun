@@ -1,4 +1,5 @@
 ﻿using ServiMun.Models;
+using ServiMun.Shared;
 
 namespace ServiMun.Services
 {
@@ -12,6 +13,7 @@ namespace ServiMun.Services
         Task<IEnumerable<PadronBoletaGetDTO>> RecuperarPadronBoletaPorNumeroPadron(int numeroPadron);
         Task<IEnumerable<PadronBoletaGetDTO>> RecuperarPadronBoletaPorTributoPeriodo(int idTributo, int periodo);
         Task<IEnumerable<PadronBoletaGetDTO>> RecuperarPadronBoletaPorNumeroPadronPeriodo(int numeroPadron, int periodo);
+        Task<Result<IEnumerable<PadronBoletaDTO>>> GenerarPadronBoleta(int numeroPadron, int periodoInicial, int cantidad);
     }
 
 }

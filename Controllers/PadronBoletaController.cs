@@ -169,5 +169,13 @@ public class PadronBoletaController : ControllerBase
         }
         return Ok(result);
     }
+    [HttpGet("GenerarPadronBoleta/{numeroPadron}/{periodo}/{cantidad}")]
+    public async Task<ActionResult<IEnumerable<PadronBoleta>>> GenerarBoleta(int numeroPadron, int periodo, int cantidad)
+    {
+
+        var resultado = await _padronBoletaService.GenerarPadronBoleta(numeroPadron, periodo, cantidad);
+        return Ok(resultado);
+
+    }
 
 }

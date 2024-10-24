@@ -12,5 +12,6 @@ namespace ServiMun.Services
         Task<Result<ServicioBoleta>> GetServicioBoletaPorId(int idServicioBoleta);
         Task<IEnumerable<ServicioBoleta>> GetServicioBoletaPorNumeroServicio(int numeroServicio);
         Task<IEnumerable<ServicioBoleta>> GetServicioBoletaPorNumeroServicioPeriodo(int numeroServicio, int periodo);
+        Task<Result<IEnumerable<ServicioBoletaDTO>>> GenerarServicioBoleta(int numeroServicio, int periodo, int cantidad);
     }
 }

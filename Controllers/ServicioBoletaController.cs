@@ -76,5 +76,13 @@ namespace ServiMun.Controllers
             }
             return Ok(resultado._value);
         }
+        [HttpGet("GenerarServicioBoleta/{numeroServicio}/{periodo}/{cantidad}")]
+        public async Task<ActionResult<IEnumerable<PadronBoleta>>> GenerarBoleta(int numeroServicio, int periodo, int cantidad)
+        {
+
+            var resultado = await _servicioBoletaService.GenerarServicioBoleta(numeroServicio, periodo, cantidad);
+            return Ok(resultado);
+
+        }
     }
 }

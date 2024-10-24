@@ -1,0 +1,1096 @@
+[
+  {
+    "ContainingType": "ServiMun.Controllers.ContribuyenteController",
+    "Method": "AltaNuevoContribuyente",
+    "RelativePath": "api/Contribuyente",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "contribuyenteDTO",
+        "Type": "ServiMun.Models.ContribuyenteDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.Contribuyente",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ContribuyenteController",
+    "Method": "RecuperacionTodosContribuyente",
+    "RelativePath": "api/Contribuyente",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.Contribuyente, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ContribuyenteController",
+    "Method": "BajaContribuyente",
+    "RelativePath": "api/Contribuyente/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ContribuyenteController",
+    "Method": "ModificacionContribuyente",
+    "RelativePath": "api/Contribuyente/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "contribuyenteDTO",
+        "Type": "ServiMun.Models.ContribuyenteDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ContribuyenteController",
+    "Method": "RecuperacionContribuyente",
+    "RelativePath": "api/Contribuyente/porId/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.Contribuyente",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ContribuyenteController",
+    "Method": "RecuperacionContribuyente",
+    "RelativePath": "api/Contribuyente/porNumero/{NumeroDocumentoContribuyente}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "NumeroDocumentoContribuyente",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.Contribuyente",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PadronBoletaController",
+    "Method": "AltaPadronBoleta",
+    "RelativePath": "api/PadronBoleta",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "padronBoletaDTO",
+        "Type": "ServiMun.Models.PadronBoletaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PadronBoletaController",
+    "Method": "BajaPadronBoleta",
+    "RelativePath": "api/PadronBoleta/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PadronBoletaController",
+    "Method": "ModificacionPadronBoleta",
+    "RelativePath": "api/PadronBoleta/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "padronBoletaDTO",
+        "Type": "ServiMun.Models.PadronBoletaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PadronBoletaController",
+    "Method": "RecuperarPadronBoletaPorId",
+    "RelativePath": "api/PadronBoleta/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.PadronBoletaGetDTO, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PadronBoletaController",
+    "Method": "GenerarBoleta",
+    "RelativePath": "api/PadronBoleta/GenerarPadronBoleta/{numeroPadron}/{periodo}/{cantidad}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroPadron",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "periodo",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "cantidad",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.PadronBoleta, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PadronBoletaController",
+    "Method": "RecuperarPadronBoletaPorNumeroPadron",
+    "RelativePath": "api/PadronBoleta/numeroPadron/{numeroPadron}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroPadron",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PadronBoletaController",
+    "Method": "RecuperarPadronBoletaPorNumeroPadronPeriod",
+    "RelativePath": "api/PadronBoleta/padronPeriodo/{numeroPadron}/{periodo}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroPadron",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "periodo",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PadronBoletaController",
+    "Method": "PagoPadronBoleta",
+    "RelativePath": "api/PadronBoleta/pagoPorId/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PadronBoletaController",
+    "Method": "PagoPadronBoleta",
+    "RelativePath": "api/PadronBoleta/pagoPorNumeroPadronPeriodo/{numeroPadron}/{periodo}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroPadron",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "periodo",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PadronBoletaController",
+    "Method": "RecuperarPadronBoletaPorTributoPeriodo",
+    "RelativePath": "api/PadronBoleta/tributoPeriodo/{idTributo}/{periodo}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idTributo",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "periodo",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.PadronContribuyenteController",
+    "Method": "AltaContribuyentePadron",
+    "RelativePath": "api/PadronContribuyente",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "padronContribuyenteDTO",
+        "Type": "ServiMun.Models.PadronContribuyenteDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.PadronContribuyenteDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.PadronContribuyenteController",
+    "Method": "BajaContribuyentePadron",
+    "RelativePath": "api/PadronContribuyente/{idContribuyente}/{idTributoMunicipal}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idContribuyente",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idTributoMunicipal",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.PadronContribuyenteController",
+    "Method": "ModificacionContribuyentePadron",
+    "RelativePath": "api/PadronContribuyente/{idContribuyente}/{idTributoMunicipal}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idContribuyente",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idTributoMunicipal",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "padronContribuyenteDTO",
+        "Type": "ServiMun.Models.PadronContribuyenteDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.PadronContribuyenteController",
+    "Method": "RecuperaPadronContribuyenteId",
+    "RelativePath": "api/PadronContribuyente/{idContribuyente}/{idTributoMunicipal}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idContribuyente",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "idTributoMunicipal",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.PadronContribuyenteGetDTO, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.PadronContribuyenteController",
+    "Method": "RecuperaPadronContribuyente",
+    "RelativePath": "api/PadronContribuyente/contribuyente/{numeroDocumentoContribuyente}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroDocumentoContribuyente",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.PadronContribuyenteGetDTO, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.PadronContribuyenteController",
+    "Method": "RecuperaContribuyentePadron",
+    "RelativePath": "api/PadronContribuyente/padron/{numeroPadron}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroPadron",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.PadronContribuyenteGetDTO, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.PadronContribuyenteController",
+    "Method": "RecuperarContribuyenteTributo",
+    "RelativePath": "api/PadronContribuyente/tributo/{idTributoMunicipal}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idTributoMunicipal",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.PadronContribuyenteGetDTO, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioController",
+    "Method": "getAllServicio",
+    "RelativePath": "api/Servicio",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.Servicio, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioController",
+    "Method": "AddServicio",
+    "RelativePath": "api/Servicio",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "servicioDTO",
+        "Type": "ServiMun.Models.ServicioDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.Servicio",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioController",
+    "Method": "UpdateServicio",
+    "RelativePath": "api/Servicio",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "servicioDTO",
+        "Type": "ServiMun.Models.ServicioDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioController",
+    "Method": "DeleteServicio",
+    "RelativePath": "api/Servicio",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioController",
+    "Method": "getServicioById",
+    "RelativePath": "api/Servicio/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.Servicio",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioBoletaController",
+    "Method": "AddServicioBoleta",
+    "RelativePath": "api/ServicioBoleta",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "servicioBoletaDTO",
+        "Type": "ServiMun.Models.ServicioBoletaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.ServicioBoleta",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioBoletaController",
+    "Method": "UpdateServicioBoleta",
+    "RelativePath": "api/ServicioBoleta",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idServicioBoleta",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "servicioBoletaDTO",
+        "Type": "ServiMun.Models.ServicioBoletaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioBoletaController",
+    "Method": "DeleteServicioBoleta",
+    "RelativePath": "api/ServicioBoleta",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idServicioBoleta",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioBoletaController",
+    "Method": "GenerarBoleta",
+    "RelativePath": "api/ServicioBoleta/GenerarServicioBoleta/{numeroServicio}/{periodo}/{cantidad}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroServicio",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "periodo",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "cantidad",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.PadronBoleta, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioBoletaController",
+    "Method": "GetServicioBoletaById",
+    "RelativePath": "api/ServicioBoleta/GetServicioBoletaById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.ServicioBoleta",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioBoletaController",
+    "Method": "GetAllServicioBoletaByNumeroServicio",
+    "RelativePath": "api/ServicioBoleta/GetServicioBoletaByNumeroServicio",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroServicio",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.ServicioBoleta, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioBoletaController",
+    "Method": "GetAllServicioBoletaByNumeroServicioPeriodo",
+    "RelativePath": "api/ServicioBoleta/GetServicioBoletaByNumeroServicioPeriodo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "numeroServicio",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "numeroPeriodo",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.ServicioBoleta, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioBoletaController",
+    "Method": "PagoServicioBoleta",
+    "RelativePath": "api/ServicioBoleta/PagoServicioBoleta",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdServicioBoleta",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioClienteController",
+    "Method": "AddServicioCliente",
+    "RelativePath": "api/ServicioCliente",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "servicioClienteDTO",
+        "Type": "ServiMun.Models.ServicioClienteDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.ServicioCliente",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioClienteController",
+    "Method": "UpdateServicioCliente",
+    "RelativePath": "api/ServicioCliente",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "servicioClienteDTO",
+        "Type": "ServiMun.Models.ServicioClienteDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioClienteController",
+    "Method": "DeleteServicioCliente",
+    "RelativePath": "api/ServicioCliente",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idServicio",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "idContribuyente",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "numeroServicio",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioClienteController",
+    "Method": "GetAllServicioCliente",
+    "RelativePath": "api/ServicioCliente/GetAllServicioCliente",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idServicio",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.ServicioCliente, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.ServicioClienteController",
+    "Method": "GetServicioClienteByNumeroServicio",
+    "RelativePath": "api/ServicioCliente/GetServicio",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idServicio",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "idContribuyente",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "numeroServicio",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.ServicioCliente",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.TributoMunicipalController",
+    "Method": "AltaNuevoTributoMunicipal",
+    "RelativePath": "api/TributoMunicipal",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tributoDTO",
+        "Type": "ServiMun.Models.TributoMunicipalDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.TributoMunicipal",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.TributoMunicipalController",
+    "Method": "RecuperacionTodosTributoMunicipal",
+    "RelativePath": "api/TributoMunicipal",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.Models.TributoMunicipal, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.TributoMunicipalController",
+    "Method": "BajaTributoMunicipal",
+    "RelativePath": "api/TributoMunicipal/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.TributoMunicipalController",
+    "Method": "ModificacionTributoMunicipal",
+    "RelativePath": "api/TributoMunicipal/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tributoDTO",
+        "Type": "ServiMun.Models.TributoMunicipalDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.TributoMunicipalController",
+    "Method": "RecuperacionTributoMunicipal",
+    "RelativePath": "api/TributoMunicipal/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ServiMun.Models.TributoMunicipal",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ServiMun.Controllers.WeatherForecastController",
+    "Method": "Get",
+    "RelativePath": "WeatherForecast",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ServiMun.WeatherForecast, ServiMun, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "EndpointName": "GetWeatherForecast"
+  }
+]

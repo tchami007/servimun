@@ -1,0 +1,145 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\NET\\ServiMun\\servimun\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{45FA6FD6-19A7-4B04-A294-539A926D8233}|ServiMun.csproj|c:\\net\\servimun\\servimun\\services\\iservicioboletaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45FA6FD6-19A7-4B04-A294-539A926D8233}|ServiMun.csproj|solutionrelative:services\\iservicioboletaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45FA6FD6-19A7-4B04-A294-539A926D8233}|ServiMun.csproj|c:\\net\\servimun\\servimun\\controllers\\servicioboletacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45FA6FD6-19A7-4B04-A294-539A926D8233}|ServiMun.csproj|solutionrelative:controllers\\servicioboletacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45FA6FD6-19A7-4B04-A294-539A926D8233}|ServiMun.csproj|c:\\net\\servimun\\servimun\\services\\servicioboletaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45FA6FD6-19A7-4B04-A294-539A926D8233}|ServiMun.csproj|solutionrelative:services\\servicioboletaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45FA6FD6-19A7-4B04-A294-539A926D8233}|ServiMun.csproj|c:\\net\\servimun\\servimun\\services\\padronboletaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45FA6FD6-19A7-4B04-A294-539A926D8233}|ServiMun.csproj|solutionrelative:services\\padronboletaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45FA6FD6-19A7-4B04-A294-539A926D8233}|ServiMun.csproj|c:\\net\\servimun\\servimun\\services\\ipadronboletaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45FA6FD6-19A7-4B04-A294-539A926D8233}|ServiMun.csproj|solutionrelative:services\\ipadronboletaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 12,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:134:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:135:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:136:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ServicioBoletaController.cs",
+              "DocumentMoniker": "C:\\NET\\ServiMun\\servimun\\Controllers\\ServicioBoletaController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ServicioBoletaController.cs",
+              "ToolTip": "C:\\NET\\ServiMun\\servimun\\Controllers\\ServicioBoletaController.cs",
+              "RelativeToolTip": "Controllers\\ServicioBoletaController.cs",
+              "ViewState": "AgIAAEcAAAAAAAAAAAAiwFcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T13:51:14.642Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ServicioBoletaService.cs",
+              "DocumentMoniker": "C:\\NET\\ServiMun\\servimun\\Services\\ServicioBoletaService.cs",
+              "RelativeDocumentMoniker": "Services\\ServicioBoletaService.cs",
+              "ToolTip": "C:\\NET\\ServiMun\\servimun\\Services\\ServicioBoletaService.cs",
+              "RelativeToolTip": "Services\\ServicioBoletaService.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAAAG0AAACNAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T12:36:46.615Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "IServicioBoletaService.cs",
+              "DocumentMoniker": "C:\\NET\\ServiMun\\servimun\\Services\\IServicioBoletaService.cs",
+              "RelativeDocumentMoniker": "Services\\IServicioBoletaService.cs",
+              "ToolTip": "C:\\NET\\ServiMun\\servimun\\Services\\IServicioBoletaService.cs",
+              "RelativeToolTip": "Services\\IServicioBoletaService.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAxwA4AAAB6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T12:34:40.741Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PadronBoletaService.cs",
+              "DocumentMoniker": "C:\\NET\\ServiMun\\servimun\\Services\\PadronBoletaService.cs",
+              "RelativeDocumentMoniker": "Services\\PadronBoletaService.cs",
+              "ToolTip": "C:\\NET\\ServiMun\\servimun\\Services\\PadronBoletaService.cs",
+              "RelativeToolTip": "Services\\PadronBoletaService.cs",
+              "ViewState": "AgIAAMEAAAAAAAAAAAAAAMYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T19:42:28.302Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IPadronBoletaService.cs",
+              "DocumentMoniker": "C:\\NET\\ServiMun\\servimun\\Services\\IPadronBoletaService.cs",
+              "RelativeDocumentMoniker": "Services\\IPadronBoletaService.cs",
+              "ToolTip": "C:\\NET\\ServiMun\\servimun\\Services\\IPadronBoletaService.cs",
+              "RelativeToolTip": "Services\\IPadronBoletaService.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAA5wA8AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T19:39:43.24Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

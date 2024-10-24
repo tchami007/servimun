@@ -8,6 +8,7 @@ namespace ServiMun.Services
     public class ServicioBoletaService : IServicioBoletaService
     {
         private readonly TributoMunicipalContext _context;
+        private Random rand = new Random();
         public ServicioBoletaService(TributoMunicipalContext context)
         {
             _context = context;
@@ -45,6 +46,7 @@ namespace ServiMun.Services
             await _context.SaveChangesAsync();
             return Result<ServicioBoleta>.Success(encontrado);
         }
+
         public async Task<Result<ServicioBoleta>> GetServicioBoletaPorId(int idServicioBoleta)
         {
             var encontrado = await _context.ServicioBoletas.FirstOrDefaultAsync(x=>x.IdBoletaServicio==idServicioBoleta);
@@ -104,6 +106,87 @@ namespace ServiMun.Services
             await _context.SaveChangesAsync();
 
             return Result<ServicioBoleta>.Success(encontrado);
+        }
+        public async Task<Result<IEnumerable<ServicioBoletaDTO>>> GenerarServicioBoleta(int numeroServicio, int periodoInicial, int cantidad)
+        {
+            int per = periodoInicial;
+
+            int anio = int.Parse(periodoInicial.ToString().Substring(0, 4));
+
+            int mes = int.Parse(periodoInicial.ToString().Substring(4, 2));
+
+            if (per < 202401 || per > 202601)
+            {
+                return Result<IEnumerable<ServicioBoletaDTO>>.Failure("Error: periodo Inicial debe ser mayor 202401 y menor a 202601. Operacion Cancelada");
+            }
+
+            if (anio < 2024 || anio > 2026)
+            {
+                return Result<IEnumerable<ServicioBoletaDTO>>.Failure("Error: periodo Inicial debe ser mayor 202401 y menor a 202601. OperacioCancelada");
+            }
+
+            if (mes + cantidad - 1 > 12)
+            {
+                return Result<IEnumerable<ServicioBoletaDTO>>.Failure("Error: periodo + cantidad supera mes 12. OperacioCancelada");
+            }
+
+
+            for (int i = 0; i <= cantidad - 1; i++)
+            {
+                var encontrado = await _context.ServicioBoletas.FirstOrDefaultAsync(x => x.NumeroServicio == numeroServicio && x.Periodo == periodoInicial);
+                if (encontrado == null)
+                {
+                    // Armado de importes
+                    decimal importe = rand.Next(1000, 9000);
+                    decimal importe2 = importe + (importe * 10 / 100);
+
+                    // Armado de vencimientos
+                    DateTime vencimiento = new DateTime();
+                    DateTime vencimiento2 = new DateTime();
+
+                    vencimiento = DateTime.Parse(anio.ToString() + "-" + (mes + i).ToString() + "-10");
+                    vencimiento2 = vencimiento.AddDays(10);
+
+                    // Creacion de boleta
+                    ServicioBoleta nuevoServicio = new ServicioBoleta
+                    {
+                        NumeroServicio = numeroServicio,
+                        Periodo = periodoInicial,
+                        Importe = importe,
+                        Importe2 = importe2,
+                        Vencimiento = vencimiento,
+                        Vencimiento2 = vencimiento2,
+                        Pagado = false
+                    };
+
+                    // Registro de nuevo padron
+                    await _context.ServicioBoletas.AddAsync(nuevoServicio);
+                }
+
+                // Proximo periodo
+                periodoInicial = periodoInicial + 1;
+
+            }
+
+            await _context.SaveChangesAsync();
+
+            var resultado = await _context.ServicioBoletas
+                .Where(x => x.NumeroServicio == numeroServicio)
+                .OrderBy(x => x.Periodo)
+                .Select(x => new ServicioBoletaDTO
+                {
+                    IdBoletaServicio = x.IdBoletaServicio,
+                    NumeroServicio = x.NumeroServicio,
+                    Periodo = x.Periodo,
+                    Importe = x.Importe,
+                    Vencimiento = x.Vencimiento,
+                    Pagado = x.Pagado,
+                    Vencimiento2 = x.Vencimiento2,
+                    Importe2 = x.Importe2
+                }
+                ).ToListAsync();
+
+            return Result<IEnumerable<ServicioBoletaDTO>>.Success(resultado);
         }
     }
 }
