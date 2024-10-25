@@ -1,0 +1,65 @@
+# Archivos binarios y de compilación
+bin/
+obj/
+
+# Archivos generados por el sistema
+*.log
+*.vspscc
+*.vssscc
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Carpetas de Visual Studio
+.vscode/
+.vs/
+
+# Paquetes NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Dependencias de la carpeta local (carpetas creadas por NuGet)
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Archivos temporales
+*.tmp
+*.temp
+*.cache
+*.pdb
+*.pidb
+
+# Archivos de configuración de IIS
+*.config
+*.iissettings.json
+
+# Configuraciones de usuario específicas de VS
+*.csproj.user
+*.csproj.DotSettings.user
+
+# Publicación y despliegue
+publish/
+*.publishsettings
+appsettings.*.json
+
+# Archivos generados por Rider (JetBrains)
+.idea/
+*.sln.iml
+
+# Archivos generados por Docker
+docker-compose.override.yml
+
+# Archivos de depuración
+*.dbmdl
+*.jfm
+
+# Archivos generados por la compilación
+*_UpgradeLog*.xml
+UpgradeLog*.XML
+rebuild.log
+
+# Archivos de entorno local
+.env
