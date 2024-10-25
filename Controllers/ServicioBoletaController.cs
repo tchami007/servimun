@@ -17,46 +17,46 @@ namespace ServiMun.Controllers
             _servicioBoletaService = servicioBoletaService;
         }
         
-        [HttpGet("GetServicioBoletaById")]
-        public async Task<ActionResult<ServicioBoleta>> GetServicioBoletaById(int id)
+        [HttpGet("porIdServicioBoleta/{idServicioBoleta}")]
+        public async Task<ActionResult<ServicioBoleta>> GetServicioBoletaById(int idServicioBoleta)
         {
-            var resultado = await _servicioBoletaService.GetServicioBoletaPorId(id);
+            var resultado = await _servicioBoletaService.GetServicioBoletaPorId(idServicioBoleta);
             var res = resultado._value;
             if (res == null) { return NotFound(resultado._errorMessage); }
             return Ok(res);
         }
 
-        [HttpGet("GetServicioBoletaByNumeroServicio")]
+        [HttpGet("porNumeroServicio/{numeroServicio}")]
         public async Task<IEnumerable<ServicioBoleta>> GetAllServicioBoletaByNumeroServicio(int numeroServicio)
         {
             var resultado = await _servicioBoletaService.GetServicioBoletaPorNumeroServicio(numeroServicio);
             return resultado;
         }
-        [HttpGet("GetServicioBoletaByNumeroServicioPeriodo")]
+        [HttpGet("porNumeroServicioNumeroPeriodo/{numeroServicio}/{numeroPeriodo}")]
         public async Task<IEnumerable<ServicioBoleta>> GetAllServicioBoletaByNumeroServicioPeriodo(int numeroServicio, int numeroPeriodo)
         {
             var resultado = await _servicioBoletaService.GetServicioBoletaPorNumeroServicioPeriodo(numeroServicio,numeroPeriodo);
             return resultado;
         }
         [HttpPost]
-        public async Task<ActionResult<ServicioBoleta>> AddServicioBoleta(ServicioBoletaDTO servicioBoletaDTO)
+        public async Task<ActionResult<ServicioBoleta>> AddServicioBoleta([FromBody] ServicioBoletaDTO servicioBoletaDTO)
         {
             var resultado = await _servicioBoletaService.AddServicioBoleta(servicioBoletaDTO);
             if(!resultado._succes) 
             { 
                 return BadRequest(resultado._errorMessage);
             }
-            return CreatedAtAction(nameof(GetServicioBoletaById),new {id=resultado._value.IdBoletaServicio}, resultado._value);
+            return CreatedAtAction(nameof(GetServicioBoletaById),new {idServicioBoleta=resultado._value.IdBoletaServicio}, resultado._value);
         }
-        [HttpPut]
-        public async Task<ActionResult> UpdateServicioBoleta(int idServicioBoleta, ServicioBoletaDTO servicioBoletaDTO)
+        [HttpPut("{idServicioBoleta}")]
+        public async Task<ActionResult> UpdateServicioBoleta(int idServicioBoleta, [FromBody] ServicioBoletaDTO servicioBoletaDTO)
         {
             var resultado = await _servicioBoletaService.UpdateServicioBoleta(idServicioBoleta , servicioBoletaDTO);
             if (!resultado._succes)
             { return BadRequest(resultado._errorMessage);}
             else { return NoContent(); }
         }
-        [HttpDelete]
+        [HttpDelete("{idServicioBoleta}")]
         public async Task<ActionResult> DeleteServicioBoleta(int idServicioBoleta)
         {
             var resultado = await _servicioBoletaService.DeleteServicioBoleta(idServicioBoleta);
@@ -66,10 +66,10 @@ namespace ServiMun.Controllers
             }
             return NoContent();
         }
-        [HttpPost("PagoServicioBoleta")]
-        public async Task<ActionResult> PagoServicioBoleta(int IdServicioBoleta)
+        [HttpPost("PagoServicioBoleta/{idServicioBoleta}")]
+        public async Task<ActionResult> PagoServicioBoleta(int idServicioBoleta)
         {
-            var resultado = await _servicioBoletaService.PagoServicioBoleta(IdServicioBoleta);
+            var resultado = await _servicioBoletaService.PagoServicioBoleta(idServicioBoleta);
             if (!resultado._succes)
             {
                 return BadRequest(resultado._errorMessage);

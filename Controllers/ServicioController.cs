@@ -16,11 +16,11 @@ namespace ServiMun.Controllers
         {
             _servicioService = servicioService;
         }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Servicio>> getServicioById(int id)
+        [HttpGet("getServicioById/{idServicio}")]
+        public async Task<ActionResult<Servicio>> getServicioById(int idServicio)
         {
-            var resultado = await _servicioService.GetServicio(id);
-            if (resultado == null) { return NotFound(id); }
+            var resultado = await _servicioService.GetServicio(idServicio);
+            if (resultado == null) { return NotFound(idServicio); }
             return Ok(resultado);
         }
         [HttpGet] 
@@ -36,17 +36,17 @@ namespace ServiMun.Controllers
             if (resultado._succes) 
             {
                 var nuevo = resultado._value;
-                return CreatedAtAction(nameof(getServicioById), new { id = nuevo.IdServicio }, nuevo);
+                return CreatedAtAction(nameof(getServicioById), new { idServicio = nuevo.IdServicio }, nuevo);
             }
             else
             {
                 return BadRequest(resultado._errorMessage);
             }
         }
-        [HttpPut]
-        public async Task<ActionResult> UpdateServicio(int id, ServicioDTO servicioDTO)
+        [HttpPut("{idServicio}")]
+        public async Task<ActionResult> UpdateServicio(int idServicio, [FromBody] ServicioDTO servicioDTO)
         {
-            var resultado = await _servicioService.UpdateServicio( id, servicioDTO);
+            var resultado = await _servicioService.UpdateServicio( idServicio, servicioDTO);
             if (resultado._succes)
             {
                 return NoContent();
@@ -56,10 +56,10 @@ namespace ServiMun.Controllers
                 return BadRequest(resultado._errorMessage);
             }
         }
-        [HttpDelete]
-        public async Task<ActionResult> DeleteServicio(int id)
+        [HttpDelete("{idServicio}")]
+        public async Task<ActionResult> DeleteServicio(int idServicio)
         {
-            var resultado = await _servicioService.DeleteServicio(id);
+            var resultado = await _servicioService.DeleteServicio(idServicio);
             if (resultado._succes)
             {
                 return NoContent();

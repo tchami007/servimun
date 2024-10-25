@@ -17,8 +17,8 @@ namespace ServiMun.Controllers
             _servicioClienteService = servicioClienteService;
         }
 
-        [HttpGet("GetServicio")]
-        public async Task<ActionResult<ServicioCliente>> GetServicioClienteByNumeroServicio(int idServicio, int idContribuyente, int numeroServicio)
+        [HttpGet("{idServicio}/{idContribuyente}/{numeroServicio}")]
+        public async Task<ActionResult<ServicioCliente>> GetServicioById(int idServicio, int idContribuyente, int numeroServicio)
         {
             var resultado = await _servicioClienteService.getServicioClienteById(idServicio, idContribuyente, numeroServicio);
             if (resultado._succes)
@@ -32,7 +32,7 @@ namespace ServiMun.Controllers
 
         }
 
-        [HttpGet ("GetAllServicioCliente")]
+        [HttpGet ("{idServicio}")]
         public async Task<ActionResult<IEnumerable<ServicioCliente>>> GetAllServicioCliente(int idServicio)
         {
             var resultado = await _servicioClienteService.getServicioClienteAll(idServicio);
@@ -41,13 +41,13 @@ namespace ServiMun.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServicioCliente>> AddServicioCliente(ServicioClienteDTO servicioClienteDTO)
+        public async Task<ActionResult<ServicioCliente>> AddServicioCliente([FromBody] ServicioClienteDTO servicioClienteDTO)
         {
             var resultado = await _servicioClienteService.addServicioCliente (servicioClienteDTO);
             if (resultado._succes)
             {
                 var res = resultado._value;
-                return CreatedAtAction(nameof(GetServicioClienteByNumeroServicio),new { IdServicio = res.IdServicio, IdContribuyente = res.IdContribuyente, NumeroServicio = res.NumeroServicio }, res);
+                return CreatedAtAction(nameof(GetServicioById),new { IdServicio = res.IdServicio, IdContribuyente = res.IdContribuyente, NumeroServicio = res.NumeroServicio }, res);
             }
             else
             {
@@ -55,11 +55,9 @@ namespace ServiMun.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateServicioCliente([FromBody]ServicioClienteDTO servicioClienteDTO)
+        [HttpPut("{idServicio}/{idContribuyente}")]
+        public async Task<ActionResult> UpdateServicioCliente(int idServicio, int idContribuyente , [FromBody]ServicioClienteDTO servicioClienteDTO)
         {
-            int idContribuyente = servicioClienteDTO.IdContribuyente;
-            int idServicio = servicioClienteDTO.IdServicio;
             int numeroServicio = servicioClienteDTO.NumeroServicio;
 
             var resultado = await _servicioClienteService.updateServicioCliente(idServicio, idContribuyente, numeroServicio, servicioClienteDTO);
@@ -74,7 +72,7 @@ namespace ServiMun.Controllers
                 return BadRequest(resultado._errorMessage);
             }
         }
-        [HttpDelete]
+        [HttpDelete("{idServicio}/{idContribuyente}/{numeroServicio}")]
         public async Task<ActionResult> DeleteServicioCliente(int idServicio, int idContribuyente, int numeroServicio)
         {
             var resultado = await _servicioClienteService.deleteServicioCliente(idServicio,idContribuyente,numeroServicio);
