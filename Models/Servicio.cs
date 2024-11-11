@@ -10,8 +10,11 @@ namespace ServiMun.Models
         public string Sintetico { get; set; }
         public bool Estado { get; set; } // True: Activo, False: Inactivo
 
-        // Relacion con PadronCntribuyente
+        // Relacion inversa -  PadronCntribuyente
         public ICollection<ServicioCliente> ServicioClientes { get; set; }
+
+        // Relación inversa - Movimientos
+        public ICollection<Movimiento> Movimientos { get; set; }
     }
 
 }

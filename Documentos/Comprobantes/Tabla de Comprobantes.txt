@@ -1,0 +1,45 @@
+﻿<
+CREATE PROCEDURE ObtenerProximoNumeroComprobante
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Incrementa el último número de comprobante
+    UPDATE ComprobanteControl
+    SET UltimoNumeroComprobante = UltimoNumeroComprobante + 1
+    WHERE IdControl = 1;
+
+    -- Obtén y devuelve el nuevo valor
+    SELECT UltimoNumeroComprobante AS ProximoNumeroComprobante
+    FROM ComprobanteControl
+    WHERE IdControl = 1;
+END;
+>
+CREATE PROCEDURE ObtenerProximoNumeroComprobante
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @NuevoNumeroComprobante INT;
+
+    -- Incrementa el último número de comprobante
+    UPDATE ComprobanteControl
+    SET UltimoNumeroComprobante = UltimoNumeroComprobante + 1
+    WHERE IdControl = 1;
+
+    -- Obtén y devuelve el nuevo valor
+    SELECT UltimoNumeroComprobante AS ProximoNumeroComprobante
+    FROM ComprobanteControl
+    WHERE IdControl = 1;
+END;
+
+public static class ComprobanteGenerator
+{
+    public static int ObtenerProximoNumeroComprobante(AppDbContext context)
+    {
+        // Ejecuta el procedimiento almacenado para obtener el siguiente número de comprobante
+        return context.Database
+            .SqlQuery<int>("EXEC ObtenerProximoNumeroComprobante")
+            .Single();
+    }
+}

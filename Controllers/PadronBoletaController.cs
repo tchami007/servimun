@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiMun.Models;
 using ServiMun.Services;
+using ServiMun.Shared;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -14,7 +15,7 @@ public class PadronBoletaController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AltaPadronBoleta([FromBody] PadronBoletaDTO padronBoletaDTO)
+    public async Task<ActionResult<Result<PadronBoleta>>> AltaPadronBoleta([FromBody] PadronBoletaDTO padronBoletaDTO)
 
     {
         var nuevoPadronBoleta = new PadronBoleta
@@ -29,22 +30,23 @@ public class PadronBoletaController : ControllerBase
 
         };
 
-        var result = await _padronBoletaService.AltaPadronBoleta(nuevoPadronBoleta);
+        var result = await _padronBoletaService.AddPadronBoleta(nuevoPadronBoleta);
 
-        if (result == null)
+        if (!result._succes)
         {
-            return BadRequest();
+            return BadRequest(result);
         }
-        return CreatedAtAction(nameof(RecuperarPadronBoletaPorId), new { id = result.IdBoleta }, result);
+
+        return CreatedAtAction(nameof(RecuperarPadronBoletaPorId), new { id = result._value.IdBoleta }, result);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> BajaPadronBoleta(int id)
     {
-        var result = await _padronBoletaService.BajaPadronBoleta(id);
-        if (!result)
+        var result = await _padronBoletaService.DeletePadronBoleta(id);
+        if (!result._succes)
         {
-            return NotFound();
+            return NotFound(result);
         }
         return NoContent();
     }
@@ -69,77 +71,32 @@ public class PadronBoletaController : ControllerBase
             Importe2 = padronBoletaDTO.Importe2
         };
 
-        var result = await _padronBoletaService.ModificacionPadronBoleta(id, padronBoleta);
+        var result = await _padronBoletaService.UpdatePadronBoleta(id, padronBoleta);
 
-        if (result == null)
+        if (!result._succes)
         {
-            return NotFound();
+            return NotFound(result);
         }
-        return Ok(result);
-    }
-
-    [HttpPut("pagoPorId/{id}")]
-    public async Task<IActionResult> PagoPadronBoleta(int id)
-    {
-        var boleta = await _padronBoletaService.RecuperarPadronBoletaPorId(id);
-
-        if (boleta == null)
-        {
-            return NotFound();
-        }
-
-        var encontrado = boleta.FirstOrDefault();
-
-        if (encontrado.Pagado)
-        {
-            return BadRequest("El servicio ya fue pagado");
-        }
-
-        var result = await _padronBoletaService.PagoPadronBoleta(id);
-
-        return Ok(result);
-    }
-
-    [HttpPut("pagoPorNumeroPadronPeriodo/{numeroPadron}/{periodo}")]
-    public async Task<IActionResult> PagoPadronBoleta(int numeroPadron, int periodo)
-    {
-        var boleta = await _padronBoletaService.RecuperarPadronBoletaPorNumeroPadronPeriodo(numeroPadron,periodo);
-
-        if (boleta == null)
-        {
-            return NotFound();
-        }
-
-        var encontrado = boleta.FirstOrDefault();
-
-        if (encontrado.Pagado)
-        {
-            return BadRequest("El servicio ya fue pagado");
-        }
-
-        var result = await _padronBoletaService.PagoPadronBoleta(encontrado.IdBoleta);
-
-        return Ok(result);
+        return NoContent();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<IEnumerable<PadronBoletaGetDTO>>> RecuperarPadronBoletaPorId(int id)
+    public async Task<ActionResult<PadronBoleta>> RecuperarPadronBoletaPorId(int id)
     {
-        var boletas = await _padronBoletaService.RecuperarPadronBoletaPorId(id);
+        var resultado = await _padronBoletaService.GetPadronBoletaById(id);
 
-        if (boletas == null)
+        if (!resultado._succes)
         {
-            return NotFound();
+            return NotFound(resultado);
         }
 
-        return Ok(boletas);
+        return Ok(resultado._value);
     }
 
     [HttpGet("numeroPadron/{numeroPadron}")]
-    public async Task<ActionResult> RecuperarPadronBoletaPorNumeroPadron(int numeroPadron)
+    public async Task<ActionResult> RecuperarPadronBoletaPorTributoPeriodo(int numeroPadron)
     {
-
-        var result = await _padronBoletaService.RecuperarPadronBoletaPorNumeroPadron(numeroPadron);
+        var result = await _padronBoletaService.GetAllPadronBoletaByNumeroPadron(numeroPadron);
         if (result == null || !result.Any())
         {
             return NotFound();
@@ -147,35 +104,11 @@ public class PadronBoletaController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("tributoPeriodo/{idTributo}/{periodo}")]
-    public async Task<ActionResult> RecuperarPadronBoletaPorTributoPeriodo(int idTributo, int periodo)
+    [HttpGet("generar/{numeroPadron}/{periodoInicial}/{cantidad}")]
+    public async Task<ActionResult> Generar (int numeroPadron, int periodoInicial, int cantidad)
     {
-        var result = await _padronBoletaService.RecuperarPadronBoletaPorTributoPeriodo(idTributo, periodo);
-        if (result == null || !result.Any())
-        {
-            return NotFound();
-        }
-        return Ok(result);
-    }
-
-    [HttpGet("padronPeriodo/{numeroPadron}/{periodo}")]
-    public async Task<ActionResult> RecuperarPadronBoletaPorNumeroPadronPeriod(int numeroPadron, int periodo)
-    {
-
-        var result = await _padronBoletaService.RecuperarPadronBoletaPorNumeroPadronPeriodo(numeroPadron, periodo);
-        if (result == null || !result.Any())
-        {
-            return NotFound();
-        }
-        return Ok(result);
-    }
-    [HttpGet("GenerarPadronBoleta/{numeroPadron}/{periodo}/{cantidad}")]
-    public async Task<ActionResult<IEnumerable<PadronBoleta>>> GenerarBoleta(int numeroPadron, int periodo, int cantidad)
-    {
-
-        var resultado = await _padronBoletaService.GenerarPadronBoleta(numeroPadron, periodo, cantidad);
+        var resultado = await _padronBoletaService.Generar(numeroPadron, periodoInicial, cantidad);
         return Ok(resultado);
-
     }
 
 }

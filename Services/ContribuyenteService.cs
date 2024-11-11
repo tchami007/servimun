@@ -1,59 +1,64 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiMun.Data;
 using ServiMun.Models;
+using ServiMun.Repository;
+using ServiMun.Shared;
 
 namespace ServiMun.Services
 {
+    public interface IContribuyenteService
+    {
+        Task<Result<Contribuyente>> AddContribuyente(Contribuyente contribuyente);
+        Task<Result<Contribuyente>> DeleteContribuyente(int id);
+        Task<Result<Contribuyente>> UpdateContribuyente(Contribuyente contribuyente);
+        Task<Result<Contribuyente>> GetContribuyenteById(int id);
+        Task<IEnumerable<Contribuyente>> GetContribuyenteByNumero(string numeroDocumentoContribuyente);
+        Task<IEnumerable<Contribuyente>> GetAllContribuyente();
+    }
+
     public class ContribuyenteService : IContribuyenteService
     {
-        private readonly TributoMunicipalContext _context;
+        private readonly IContribuyenteRepository _contribuyenteRepository;
 
-        public ContribuyenteService(TributoMunicipalContext context)
+        public ContribuyenteService(IContribuyenteRepository contribuyenteRepository)
         {
-            _context = context;
+            _contribuyenteRepository = contribuyenteRepository;
         }
 
-        public async Task<Contribuyente> AltaNuevoContribuyente(Contribuyente contribuyente)
+        public async Task<Result<Contribuyente>> AddContribuyente(Contribuyente contribuyente)
         {
-            _context.Contribuyentes.Add(contribuyente);
-            await _context.SaveChangesAsync();
-            return contribuyente;
+            var resultado = await _contribuyenteRepository.AddContribuyente(contribuyente);
+            return resultado;
         }
 
-        public async Task<bool> BajaContribuyente(int id)
+        public async Task<Result<Contribuyente>> DeleteContribuyente(int id)
         {
-            var contribuyente = await _context.Contribuyentes.FindAsync(id);
-            if (contribuyente == null) return false;
-
-            _context.Contribuyentes.Remove(contribuyente);
-            await _context.SaveChangesAsync();
-            return true;
+            var resultado = await _contribuyenteRepository.DeleteContribuyente(id);
+            return resultado;
         }
 
-        public async Task<Contribuyente> ModificacionContribuyente(Contribuyente contribuyente)
+        public async Task<Result<Contribuyente>> UpdateContribuyente(Contribuyente contribuyente)
         {
-            _context.Entry(contribuyente).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return contribuyente;
+            var resultado = await _contribuyenteRepository.UpdateContribuyente(contribuyente);
+            return resultado;
         }
 
-        public async Task<Contribuyente> RecuperacionContribuyente(int id)
+        public async Task<Result<Contribuyente>> GetContribuyenteById(int id)
         {
-            return await _context.Contribuyentes.FindAsync(id);
+            var resultado = await _contribuyenteRepository.GetContribuyenteById(id);
+            return resultado;
         }
 
-        public async Task<IEnumerable<Contribuyente>> RecuperacionContribuyentePorNumero(string numeroDocumentoContribuyente)
+        public async Task<IEnumerable<Contribuyente>> GetContribuyenteByNumero(string numeroDocumentoContribuyente)
         {
-            return await _context.Contribuyentes
-                .Where(p => p.NumeroDocumentoContribuyente == numeroDocumentoContribuyente)
-                .ToListAsync();
+            var resultado = await _contribuyenteRepository.GetAllContribuyenteByNumeroDocumento(numeroDocumentoContribuyente);  
+            return resultado;
         }
 
-        public async Task<IEnumerable<Contribuyente>> RecuperacionTodosContribuyente()
+        public async Task<IEnumerable<Contribuyente>> GetAllContribuyente()
         {
-            return await _context.Contribuyentes
-                .OrderBy(p=>p.ApellidoNombreContribuyente)
-                .ToListAsync();
+            var resultado = await _contribuyenteRepository.GetAllContribuyente();
+            return resultado;
         }
     }
 }

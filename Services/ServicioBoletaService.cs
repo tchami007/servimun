@@ -1,113 +1,65 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiMun.Data;
 using ServiMun.Models;
+using ServiMun.Repository;
 using ServiMun.Shared;
 
 namespace ServiMun.Services
 {
+    public interface IServicioBoletaService
+    {
+        Task<Result<ServicioBoleta>> AddServicioBoleta(ServicioBoletaDTO servicioBoleta);
+        Task<Result<ServicioBoleta>> DeleteServicioBoleta(int idServicioBoleta);
+        Task<Result<ServicioBoleta>> UpdateServicioBoleta(int idServicioBoleta, ServicioBoletaDTO sertvicioBoletaDTO);
+        Task<Result<ServicioBoleta>> UpdateServicioBoleta2(int idServicioBoleta, ServicioBoleta sertvicioBoleta);
+        Task<Result<ServicioBoleta>> PagoServicioBoleta(int idServicioBoleta);
+        Task<Result<ServicioBoleta>> GetServicioBoletaPorId(int idServicioBoleta);
+        Task<IEnumerable<ServicioBoleta>> GetServicioBoletaPorNumeroServicio(int numeroServicio);
+        Task<Result<ServicioBoleta>> GetServicioBoletaPorNumeroServicioPeriodo(int numeroServicio, int periodo);
+        Task<Result<IEnumerable<ServicioBoleta>>> Generar(int numeroServicio, int periodo, int cantidad);
+    }
     public class ServicioBoletaService : IServicioBoletaService
     {
-        private readonly TributoMunicipalContext _context;
+        private readonly IServicioBoletaRepository _servicioBoleta;
         private Random rand = new Random();
-        public ServicioBoletaService(TributoMunicipalContext context)
+        public ServicioBoletaService(IServicioBoletaRepository servicioBoleta)
         {
-            _context = context;
+            _servicioBoleta = servicioBoleta;
         }
-
-        public async Task<Result<ServicioBoleta>> AddServicioBoleta(ServicioBoletaDTO servicioBoleteDTO)
+        public async Task<Result<ServicioBoleta>> AddServicioBoleta(ServicioBoletaDTO servicioBoleta)
         {
-            int numeroServicio = servicioBoleteDTO.NumeroServicio;
-            int periodo = servicioBoleteDTO.Periodo;
+            int numeroServicio = servicioBoleta.NumeroServicio;
+            int periodo = servicioBoleta.Periodo;
 
-            var encontrado = await _context.ServicioBoletas.FirstOrDefaultAsync(x=>x.NumeroServicio==numeroServicio && x.Periodo == periodo);
+            // Busqueda
+            var encontrado = await _servicioBoleta.GetServicioBoletaPorId(servicioBoleta.IdBoletaServicio);
             if (encontrado != null) { return Result<ServicioBoleta>.Failure($"El servicio ya existe. Operacion  cancelada"); }
+
+            // Nuevo elemento
             ServicioBoleta nuevaBoleta = new ServicioBoleta
             {
-                NumeroServicio=numeroServicio,
-                Periodo=periodo,
-                Importe=servicioBoleteDTO.Importe,
-                Importe2=servicioBoleteDTO.Importe2,
-                Pagado=servicioBoleteDTO.Pagado,
-                Vencimiento=servicioBoleteDTO.Vencimiento,
-                Vencimiento2=servicioBoleteDTO.Vencimiento2,
+                NumeroServicio = numeroServicio,
+                Periodo = periodo,
+                Importe = servicioBoleta.Importe,
+                Importe2 = servicioBoleta.Importe2,
+                Pagado = servicioBoleta.Pagado,
+                Vencimiento = servicioBoleta.Vencimiento,
+                Vencimiento2 = servicioBoleta.Vencimiento2,
             };
-            await _context.ServicioBoletas.AddAsync(nuevaBoleta);
-            await _context.SaveChangesAsync();
-            return Result<ServicioBoleta>.Success(nuevaBoleta);
+
+            // Registro
+
+            var resultado = await _servicioBoleta.AddServicioBoleta(nuevaBoleta);
+            return resultado;
         }
+
         public async Task<Result<ServicioBoleta>> DeleteServicioBoleta(int idServicioBoleta)
         {
-            var encontrado = await _context.ServicioBoletas.FirstOrDefaultAsync(x=>x.IdBoletaServicio == idServicioBoleta);
-            if(encontrado == null)
-            {
-                return Result<ServicioBoleta>.Failure($"La boleta de servicio no se encuentra. Operacion Cancelada");
-            }
-            _context.Remove(encontrado);
-            await _context.SaveChangesAsync();
-            return Result<ServicioBoleta>.Success(encontrado);
-        }
-
-        public async Task<Result<ServicioBoleta>> GetServicioBoletaPorId(int idServicioBoleta)
-        {
-            var encontrado = await _context.ServicioBoletas.FirstOrDefaultAsync(x=>x.IdBoletaServicio==idServicioBoleta);
-            if (encontrado == null) { return Result<ServicioBoleta>.Failure($"Servicio no encontrado:{idServicioBoleta}"); }
-            else { return Result<ServicioBoleta>.Success(encontrado); }
-        }
-        public async Task<IEnumerable<ServicioBoleta>> GetServicioBoletaPorNumeroServicio(int numeroServicio)
-        {
-            var resultado = await _context.ServicioBoletas.Where(x=>x.NumeroServicio==numeroServicio).ToListAsync();
+            var resultado = await _servicioBoleta.DeleteServicioBoleta(idServicioBoleta);
             return resultado;
         }
-        public async Task<IEnumerable<ServicioBoleta>> GetServicioBoletaPorNumeroServicioPeriodo(int numeroServicio, int periodo)
-        {
-            var resultado = await _context.ServicioBoletas.Where(x => x.NumeroServicio == numeroServicio && x.Periodo == periodo).ToListAsync();
-            return resultado;
-        }
-        public async Task<Result<ServicioBoleta>> PagoServicioBoleta(int idServicioBoleta)
-        {
-            var encontrado = await _context.ServicioBoletas.FirstOrDefaultAsync(x=>x.IdBoletaServicio==idServicioBoleta);
-            if (encontrado == null)
-            {
-                return Result<ServicioBoleta>.Failure($"El sevicio boleta no se encuentra. Operacion Cancelada: {idServicioBoleta}");
-            }
 
-            if (encontrado.Pagado)
-            {
-                return Result<ServicioBoleta>.Failure($"El sevicio boleta ya se encuentra pagado. Operacion Cancelada: {idServicioBoleta}");
-            }
-
-            encontrado.Pagado = true;
-            _context.Entry(encontrado).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return Result<ServicioBoleta>.Success(encontrado);
-        }
-        public async Task<Result<ServicioBoleta>> UpdateServicioBoleta(int idServicioBoleta, ServicioBoletaDTO sertvicioBoletaDTO)
-        {
-            if (idServicioBoleta != sertvicioBoletaDTO.IdBoletaServicio)
-            {
-                return Result<ServicioBoleta>.Failure("Los parametros Id y Dto no se corresponde. Operacion Cancelada");
-            }
-
-            var encontrado = await _context.ServicioBoletas.FirstOrDefaultAsync(x => x.IdBoletaServicio == idServicioBoleta);
-
-            if (encontrado == null)
-            {
-                return Result<ServicioBoleta>.Failure("El servicio boleta no se encuentra. Operacion Cancelada");
-            }
-
-            encontrado.NumeroServicio = sertvicioBoletaDTO.NumeroServicio;
-            encontrado.Importe = sertvicioBoletaDTO.Importe;
-            encontrado.Importe2 = sertvicioBoletaDTO.Importe2;
-            encontrado.Vencimiento = sertvicioBoletaDTO.Vencimiento;
-            encontrado.Vencimiento2 = sertvicioBoletaDTO.Vencimiento2;
-            encontrado.Pagado = sertvicioBoletaDTO.Pagado;
-
-            _context.Entry(encontrado).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return Result<ServicioBoleta>.Success(encontrado);
-        }
-        public async Task<Result<IEnumerable<ServicioBoletaDTO>>> GenerarServicioBoleta(int numeroServicio, int periodoInicial, int cantidad)
+        public async Task<Result<IEnumerable<ServicioBoleta>>> Generar(int numeroServicio, int periodoInicial, int cantidad)
         {
             int per = periodoInicial;
 
@@ -117,24 +69,24 @@ namespace ServiMun.Services
 
             if (per < 202401 || per > 202601)
             {
-                return Result<IEnumerable<ServicioBoletaDTO>>.Failure("Error: periodo Inicial debe ser mayor 202401 y menor a 202601. Operacion Cancelada");
+                return Result<IEnumerable<ServicioBoleta>>.Failure("Error: periodo Inicial debe ser mayor 202401 y menor a 202601. Operacion Cancelada");
             }
 
             if (anio < 2024 || anio > 2026)
             {
-                return Result<IEnumerable<ServicioBoletaDTO>>.Failure("Error: periodo Inicial debe ser mayor 202401 y menor a 202601. OperacioCancelada");
+                return Result<IEnumerable<ServicioBoleta>>.Failure("Error: periodo Inicial debe ser mayor 202401 y menor a 202601. OperacioCancelada");
             }
 
             if (mes + cantidad - 1 > 12)
             {
-                return Result<IEnumerable<ServicioBoletaDTO>>.Failure("Error: periodo + cantidad supera mes 12. OperacioCancelada");
+                return Result<IEnumerable<ServicioBoleta>>.Failure("Error: periodo + cantidad supera mes 12. OperacioCancelada");
             }
 
-
+            // Ciclo de generacion
             for (int i = 0; i <= cantidad - 1; i++)
             {
-                var encontrado = await _context.ServicioBoletas.FirstOrDefaultAsync(x => x.NumeroServicio == numeroServicio && x.Periodo == periodoInicial);
-                if (encontrado == null)
+                var encontrado = await _servicioBoleta.GetServicioBoletaPorNumeroServicioPeriodo(numeroServicio ,periodoInicial);
+                if (encontrado._value == null)
                 {
                     // Armado de importes
                     decimal importe = rand.Next(1000, 9000);
@@ -160,7 +112,7 @@ namespace ServiMun.Services
                     };
 
                     // Registro de nuevo padron
-                    await _context.ServicioBoletas.AddAsync(nuevoServicio);
+                    await _servicioBoleta.AddServicioBoleta(nuevoServicio);
                 }
 
                 // Proximo periodo
@@ -168,25 +120,100 @@ namespace ServiMun.Services
 
             }
 
-            await _context.SaveChangesAsync();
+            // Recuperar todo el servicio generado
+            var resultado = await _servicioBoleta.GetServicioBoletaPorNumeroServicio(numeroServicio);
 
-            var resultado = await _context.ServicioBoletas
-                .Where(x => x.NumeroServicio == numeroServicio)
-                .OrderBy(x => x.Periodo)
-                .Select(x => new ServicioBoletaDTO
-                {
-                    IdBoletaServicio = x.IdBoletaServicio,
-                    NumeroServicio = x.NumeroServicio,
-                    Periodo = x.Periodo,
-                    Importe = x.Importe,
-                    Vencimiento = x.Vencimiento,
-                    Pagado = x.Pagado,
-                    Vencimiento2 = x.Vencimiento2,
-                    Importe2 = x.Importe2
-                }
-                ).ToListAsync();
+            return Result<IEnumerable<ServicioBoleta>>.Success(resultado);
+        }
 
-            return Result<IEnumerable<ServicioBoletaDTO>>.Success(resultado);
+        public async Task<Result<ServicioBoleta>> GetServicioBoletaPorId(int idServicioBoleta)
+        {
+            var resultado = await _servicioBoleta.GetServicioBoletaPorId(idServicioBoleta);
+            return resultado;
+        }
+
+        public async Task<IEnumerable<ServicioBoleta>> GetServicioBoletaPorNumeroServicio(int numeroServicio)
+        {
+            var resultado = await _servicioBoleta.GetServicioBoletaPorNumeroServicio(numeroServicio);
+            return resultado;
+        }
+
+        public async Task<Result<ServicioBoleta>> GetServicioBoletaPorNumeroServicioPeriodo(int numeroServicio, int periodo)
+        {
+            var resultado = await _servicioBoleta.GetServicioBoletaPorNumeroServicioPeriodo(numeroServicio , periodo);
+            return resultado;
+        }
+
+        public async Task<Result<ServicioBoleta>> PagoServicioBoleta(int idServicioBoleta)
+        {
+            var encontrado = await _servicioBoleta.GetServicioBoletaPorId(idServicioBoleta);
+            if (!encontrado._succes)
+            {
+                return Result<ServicioBoleta>.Failure($"El sevicio boleta no se encuentra. Operacion Cancelada: {idServicioBoleta}");
+            }
+
+            if (encontrado._value.Pagado)
+            {
+                return Result<ServicioBoleta>.Failure($"El sevicio boleta ya se encuentra pagado. Operacion Cancelada: {idServicioBoleta}");
+            }
+
+            encontrado._value.Pagado = true;
+
+            var resultado = await _servicioBoleta.PagoServicioBoleta(encontrado._value);
+
+            return resultado;
+
+        }
+
+        public async Task<Result<ServicioBoleta>> UpdateServicioBoleta(int idServicioBoleta, ServicioBoletaDTO sertvicioBoletaDTO)
+        {
+            if (idServicioBoleta != sertvicioBoletaDTO.IdBoletaServicio)
+            {
+                return Result<ServicioBoleta>.Failure("Los parametros Id y Dto no se corresponde. Operacion Cancelada");
+            }
+
+            var encontrado = await _servicioBoleta.GetServicioBoletaPorId(idServicioBoleta);
+
+            if (!encontrado._succes)
+            {
+                return Result<ServicioBoleta>.Failure("El servicio boleta no se encuentra. Operacion Cancelada");
+            }
+
+            encontrado._value.NumeroServicio = sertvicioBoletaDTO.NumeroServicio;
+            encontrado._value.Importe = sertvicioBoletaDTO.Importe;
+            encontrado._value.Importe2 = sertvicioBoletaDTO.Importe2;
+            encontrado._value.Vencimiento = sertvicioBoletaDTO.Vencimiento;
+            encontrado._value.Vencimiento2 = sertvicioBoletaDTO.Vencimiento2;
+            encontrado._value.Pagado = sertvicioBoletaDTO.Pagado;
+
+            var resultado = await _servicioBoleta.UpdateServicioBoleta(encontrado._value);
+
+            return resultado;
+        }
+        public async Task<Result<ServicioBoleta>> UpdateServicioBoleta2(int idServicioBoleta, ServicioBoleta sertvicioBoleta)
+        {
+            if (idServicioBoleta != sertvicioBoleta.IdBoletaServicio)
+            {
+                return Result<ServicioBoleta>.Failure("Los parametros Id y Dto no se corresponde. Operacion Cancelada");
+            }
+
+            var encontrado = await _servicioBoleta.GetServicioBoletaPorId(idServicioBoleta);
+
+            if (!encontrado._succes)
+            {
+                return Result<ServicioBoleta>.Failure("El servicio boleta no se encuentra. Operacion Cancelada");
+            }
+
+            encontrado._value.NumeroServicio = sertvicioBoleta.NumeroServicio;
+            encontrado._value.Importe = sertvicioBoleta.Importe;
+            encontrado._value.Importe2 = sertvicioBoleta.Importe2;
+            encontrado._value.Vencimiento = sertvicioBoleta.Vencimiento;
+            encontrado._value.Vencimiento2 = sertvicioBoleta.Vencimiento2;
+            encontrado._value.Pagado = sertvicioBoleta.Pagado;
+
+            var resultado = await _servicioBoleta.UpdateServicioBoleta(encontrado._value);
+
+            return resultado;
         }
     }
 }

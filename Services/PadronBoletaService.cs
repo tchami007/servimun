@@ -1,280 +1,99 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiMun.Data;
 using ServiMun.Models;
+using ServiMun.Repository;
 using ServiMun.Shared;
 using System.Runtime.InteropServices;
 
 namespace ServiMun.Services
 {
+    public interface IPadronBoletaService
+    {
+        Task<Result<PadronBoleta>> AddPadronBoleta(PadronBoleta padronBoleta);
+        Task<Result<PadronBoleta>> DeletePadronBoleta(int id);
+        Task<Result<PadronBoleta>> UpdatePadronBoleta(int id, PadronBoleta padronBoleta);
+        Task<Result<PadronBoleta>> PagoPadronBoleta(int idBoleta);
+        Task<Result<PadronBoleta>> GetPadronBoletaById(int id);
+        Task<IEnumerable<PadronBoleta>> GetAllPadronBoletaByNumeroPadron(int numeroPadron);
+        Task<Result<PadronBoleta>> GetPadronBoletaByNumeroPadronNumeroPeriodo(int numeroPadron, int numeroPeriodo);
+        Task<Result<IEnumerable<PadronBoleta>>> Generar(int numeroPadron, int periodoInicial, int cantidad);
+    }
+
+
     public class PadronBoletaService : IPadronBoletaService
     {
-        private readonly TributoMunicipalContext _context;
+        private readonly  IPadronBoletaRepository _padronBoletaRepository;
         private Random rand = new Random();
 
-        public PadronBoletaService(TributoMunicipalContext context)
+        public PadronBoletaService(IPadronBoletaRepository padronBoletaRepository)
         {
-            _context = context;
+            _padronBoletaRepository = padronBoletaRepository;
         }
 
-        public async Task<PadronBoleta> AltaPadronBoleta(PadronBoleta padronBoleta)
+        public async Task<Result<PadronBoleta>> AddPadronBoleta(PadronBoleta padronBoleta)
         {
-            _context.PadronBoletas.Add(padronBoleta);
-            await _context.SaveChangesAsync();
-
-            return padronBoleta
-            ;
+            var resultado = await _padronBoletaRepository.AddItem(padronBoleta);
+            return resultado;
         }
 
-        public async Task<bool> BajaPadronBoleta(int id)
+        public async Task<Result<PadronBoleta>> DeletePadronBoleta(int id)
         {
-            var padronBoleta = await _context.PadronBoletas.FindAsync(id);
-            if (padronBoleta == null)
+            var resultado = await _padronBoletaRepository.DeleteItem(id);
+            return resultado;
+        }
+
+        public async Task<Result<PadronBoleta>> UpdatePadronBoleta(int id, PadronBoleta padronBoleta)
+        {
+            var encontrado = await _padronBoletaRepository.GetById(id);
+            if (!encontrado._succes)
             {
-                return false;
+                return Result<PadronBoleta>.Failure("Padron Boleta no identificado");
             }
 
-            _context.PadronBoletas.Remove(padronBoleta);
-            await _context.SaveChangesAsync();
+            encontrado._value.NumeroPadron = padronBoleta.NumeroPadron;
+            encontrado._value.Periodo = padronBoleta.Periodo;
+            encontrado._value.Importe = padronBoleta.Importe;
+            encontrado._value.Vencimiento = padronBoleta.Vencimiento;
+            encontrado._value.Pagado = padronBoleta.Pagado;
+            encontrado._value.Vencimiento2 = padronBoleta.Vencimiento2;
+            encontrado._value.Importe2 = padronBoleta.Importe2;
 
-            return true;
+            var resultado = await _padronBoletaRepository.UpdateItem(encontrado._value);
+
+            return resultado;
         }
-
-        public async Task<PadronBoleta> ModificacionPadronBoleta(int id, PadronBoleta padronBoleta)
+       
+        public async Task<Result<PadronBoleta>> PagoPadronBoleta(int id)
         {
-            var encontrado = await _context.PadronBoletas.FindAsync(id);
-            if (encontrado == null)
-            {
-                return null;
-            }
-
-            encontrado.NumeroPadron = padronBoleta.NumeroPadron;
-            encontrado.Periodo = padronBoleta.Periodo;
-            encontrado.Importe = padronBoleta.Importe;
-            encontrado.Vencimiento = padronBoleta.Vencimiento;
-            encontrado.Pagado = padronBoleta.Pagado;
-            encontrado.Vencimiento2 = padronBoleta.Vencimiento2;
-            encontrado.Importe2 = padronBoleta.Importe2;
-
-            await _context.SaveChangesAsync();
-
-            return encontrado;
+            var resultado = await _padronBoletaRepository.PagoItem(id);
+            return resultado;
         }
-
-        public async Task<PadronBoletaDTO> PagoPadronBoleta(int id)
+        
+        public async Task<Result<PadronBoleta>> GetPadronBoletaById(int id)
         {
-            var padronBoleta = await _context.PadronBoletas.FindAsync(id);
-            if (padronBoleta == null)
-            {
-                return null;
-            }
+            var resultado = await _padronBoletaRepository.GetById(id);
 
-            padronBoleta.Pagado = true;
-            await _context.SaveChangesAsync();
-
-            return new PadronBoletaDTO
-            {
-                IdBoleta = padronBoleta.IdBoleta,
-                NumeroPadron = padronBoleta.NumeroPadron,
-                Periodo = padronBoleta.Periodo,
-                Importe = padronBoleta.Importe,
-                Vencimiento = padronBoleta.Vencimiento,
-                Pagado = padronBoleta.Pagado,
-                Vencimiento2 = padronBoleta.Vencimiento2,
-                Importe2 = padronBoleta.Importe2
-            };
+            return resultado;
         }
 
-        public async Task<IEnumerable<PadronBoletaDTO>> RecuperarPadronBoletaPorId(int id)
+        public async Task<IEnumerable<PadronBoleta>> GetAllPadronBoletaByNumeroPadron(int numeroPadron)
         {
-            return await _context.PadronBoletas
-                .Select( pc => new PadronBoletaDTO
-                {
-                    IdBoleta = pc.IdBoleta,
-                    NumeroPadron = pc.NumeroPadron,
-                    Periodo = pc.Periodo,
-                    Vencimiento= pc.Vencimiento,
-                    Importe = pc.Importe,
-                    Pagado = pc.Pagado,
-                    Vencimiento2= pc.Vencimiento2,
-                    Importe2 = pc.Importe2
-                }
-                )
-                .Where( pc => pc.IdBoleta == id)
-                .ToListAsync();
+            var resultado = await _padronBoletaRepository.GetAllByNumeroPadron(numeroPadron);
+            return resultado;
         }
 
-        public async Task<IEnumerable<PadronBoletaGetDTO>> RecuperarPadronBoletaPorNumeroPadron(int numeroPadron)
+        public async Task<Result<PadronBoleta>> GetPadronBoletaByNumeroPadronNumeroPeriodo(int numeroPadron, int numeroPeriodo)
         {
-            return await _context.PadronBoletas
-                .Where(pb => pb.NumeroPadron == numeroPadron)
-                .OrderBy(pb => pb.Periodo)
-                .Select(pb => new PadronBoletaGetDTO
-                {
-                    IdBoleta = pb.IdBoleta,
-                    NumeroPadron = pb.NumeroPadron,
-                    Periodo = pb.Periodo,
-                    Importe = pb.Importe,
-                    Vencimiento = pb.Vencimiento,
-                    Pagado = pb.Pagado,
-                    Vencimiento2= pb.Vencimiento2,
-                    Importe2 = pb.Importe2,
-                    Contribuyente = new ContribuyenteDTO
-                    {
-                        IdContribuyente = pb.PadronContribuyente.IdContribuyente,
-                        NumeroDocumentoContribuyente = pb.PadronContribuyente.Contribuyente.NumeroDocumentoContribuyente,
-                        ApellidoNombreContribuyente = pb.PadronContribuyente.Contribuyente.ApellidoNombreContribuyente,
-                        DomicilioCalleContribuyente = pb.PadronContribuyente.Contribuyente.DomicilioCalleContribuyente,
-                        DomicilioNumeroContribuyente = pb.PadronContribuyente.Contribuyente.DomicilioNumeroContribuyente,
-                        TelefonoContribuyente = pb.PadronContribuyente.Contribuyente.TelefonoContribuyente,
-                        SexoContribuyente = pb.PadronContribuyente.Contribuyente.SexoContribuyente,
-                        FechaNacimientoContribuyente = pb.PadronContribuyente.Contribuyente.FechaNacimientoContribuyente
-                    }
-                })
-                .ToListAsync();
+            var resultado = await _padronBoletaRepository.GetByNumeroPadronPeriodo(numeroPadron, numeroPeriodo);
+            return Result<PadronBoleta>.Success(resultado);
         }
 
-        public async Task<IEnumerable<PadronBoletaGetDTO>> RecuperarPadronBoletaPorTributoPeriodo(int idTributo, int periodo)
+        public async Task<Result<IEnumerable<PadronBoleta>>> Generar(int numeroPadron, int periodoInicial, int cantidad)
         {
-            return await _context.PadronBoletas
-                .Where(pb => pb.PadronContribuyente.IdTributoMunicipal == idTributo && pb.Periodo == periodo)
-                .OrderBy(pb => pb.NumeroPadron)
-                .Select(pb => new PadronBoletaGetDTO
-                {
-                    IdBoleta = pb.IdBoleta,
-                    NumeroPadron = pb.NumeroPadron,
-                    Periodo = pb.Periodo,
-                    Importe = pb.Importe,
-                    Vencimiento = pb.Vencimiento,
-                    Pagado = pb.Pagado,
-                    Vencimiento2 = pb.Vencimiento2,
-                    Importe2 = pb.Importe2,
-                    Contribuyente = new ContribuyenteDTO
-                    {
-                        IdContribuyente = pb.PadronContribuyente.IdContribuyente,
-                        NumeroDocumentoContribuyente = pb.PadronContribuyente.Contribuyente.NumeroDocumentoContribuyente,
-                        ApellidoNombreContribuyente = pb.PadronContribuyente.Contribuyente.ApellidoNombreContribuyente,
-                        DomicilioCalleContribuyente = pb.PadronContribuyente.Contribuyente.DomicilioCalleContribuyente,
-                        DomicilioNumeroContribuyente = pb.PadronContribuyente.Contribuyente.DomicilioNumeroContribuyente,
-                        TelefonoContribuyente = pb.PadronContribuyente.Contribuyente.TelefonoContribuyente,
-                        SexoContribuyente = pb.PadronContribuyente.Contribuyente.SexoContribuyente,
-                        FechaNacimientoContribuyente = pb.PadronContribuyente.Contribuyente.FechaNacimientoContribuyente
-                    }
-                })
-                .ToListAsync();
+            var resultado = await _padronBoletaRepository.GenerarPadronBoleta(numeroPadron, periodoInicial, cantidad);
+            return resultado;
         }
 
-        public async Task<IEnumerable<PadronBoletaGetDTO>> RecuperarPadronBoletaPorNumeroPadronPeriodo(int numeroPadron, int periodo)
-        {
-            return await _context.PadronBoletas
-                .Where(pb => pb.NumeroPadron == numeroPadron && pb.Periodo == periodo)
-                .OrderBy(pb => pb.Periodo)
-                .Select(pb => new PadronBoletaGetDTO
-                {
-                    IdBoleta = pb.IdBoleta,
-                    NumeroPadron = pb.NumeroPadron,
-                    Periodo = pb.Periodo,
-                    Importe = pb.Importe,
-                    Vencimiento = pb.Vencimiento,
-                    Pagado = pb.Pagado,
-                    Vencimiento2 = pb.Vencimiento2,
-                    Importe2 = pb.Importe2,
-                    Contribuyente = new ContribuyenteDTO
-                    {
-                        IdContribuyente = pb.PadronContribuyente.IdContribuyente,
-                        NumeroDocumentoContribuyente = pb.PadronContribuyente.Contribuyente.NumeroDocumentoContribuyente,
-                        ApellidoNombreContribuyente = pb.PadronContribuyente.Contribuyente.ApellidoNombreContribuyente,
-                        DomicilioCalleContribuyente = pb.PadronContribuyente.Contribuyente.DomicilioCalleContribuyente,
-                        DomicilioNumeroContribuyente = pb.PadronContribuyente.Contribuyente.DomicilioNumeroContribuyente,
-                        TelefonoContribuyente = pb.PadronContribuyente.Contribuyente.TelefonoContribuyente,
-                        SexoContribuyente = pb.PadronContribuyente.Contribuyente.SexoContribuyente,
-                        FechaNacimientoContribuyente = pb.PadronContribuyente.Contribuyente.FechaNacimientoContribuyente
-                    }
-                })
-                .ToListAsync();
-        }
-
-        public async Task<Result<IEnumerable<PadronBoletaDTO>>> GenerarPadronBoleta(int numeroPadron, int periodoInicial, int cantidad)
-        {
-
-            int per = periodoInicial;
-
-            int anio = int.Parse(periodoInicial.ToString().Substring(0, 4));
-
-            int mes = int.Parse(periodoInicial.ToString().Substring(4, 2));
-
-            if (per < 202401 || per > 202601)
-            {
-                return Result<IEnumerable<PadronBoletaDTO>>.Failure("Error: periodo Inicial debe ser mayor 202401 y menor a 202601. OperacioCancelada");
-            }
-
-            if (anio < 2024 || anio > 2026)
-            {
-                return Result<IEnumerable<PadronBoletaDTO>>.Failure("Error: periodo Inicial debe ser mayor 202401 y menor a 202601. OperacioCancelada");
-            }
-
-            if (mes + cantidad - 1 > 12)
-            {
-                return Result<IEnumerable<PadronBoletaDTO>>.Failure("Error: periodo + cantidad supera mes 12. OperacioCancelada");
-            }
-
-
-            for (int i = 0; i <= cantidad-1; i++)
-            {
-                var encontrado = await _context.PadronBoletas.FirstOrDefaultAsync(x=> x.NumeroPadron==numeroPadron && x.Periodo==periodoInicial);
-                if (encontrado == null)
-                {
-                    // Armado de importes
-                    decimal importe = rand.Next(1000, 9000);
-                    decimal importe2 = importe + (importe * 10 / 100);
-                    
-                    // Armado de vencimientos
-                    DateTime vencimiento = new DateTime();
-                    DateTime vencimiento2 = new DateTime();
-
-                    vencimiento = DateTime.Parse(anio.ToString() + "-" + (mes + i).ToString() + "-10");
-                    vencimiento2 = vencimiento.AddDays(10);
-                    
-                    // Creacion de boleta
-                    PadronBoleta nuevoPadron = new PadronBoleta
-                    {
-                        NumeroPadron = numeroPadron,
-                        Periodo = periodoInicial,
-                        Importe = importe,
-                        Importe2 = importe2,
-                        Vencimiento = vencimiento,
-                        Vencimiento2 = vencimiento2,
-                        Pagado = false
-                    };
-
-                    // Registro de nuevo padron
-                    await _context.PadronBoletas.AddAsync(nuevoPadron);
-                }
-
-                // Proximo periodo
-                periodoInicial = periodoInicial + 1;
-
-            }
-
-            await _context.SaveChangesAsync();
-
-            var resultado = await _context.PadronBoletas
-                .Where(x => x.NumeroPadron == numeroPadron)
-                .OrderBy(x => x.Periodo)
-                .Select(x => new PadronBoletaDTO
-                {
-                    IdBoleta = x.IdBoleta,
-                    NumeroPadron = x.NumeroPadron,
-                    Periodo = x.Periodo,
-                    Importe = x.Importe,
-                    Vencimiento = x.Vencimiento,
-                    Pagado = x.Pagado,
-                    Vencimiento2 = x.Vencimiento2,
-                    Importe2 = x.Importe2
-                }
-                ).ToListAsync();
-
-            return Result<IEnumerable<PadronBoletaDTO>>.Success(resultado);
-        }
     }
 
 }

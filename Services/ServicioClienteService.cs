@@ -2,111 +2,58 @@
 using Microsoft.EntityFrameworkCore;
 using ServiMun.Data;
 using ServiMun.Models;
+using ServiMun.Repository;
 using ServiMun.Shared;
 
 namespace ServiMun.Services
 {
+    public interface IServicioClienteService 
+    { 
+        Task<Result<ServicioCliente>> addServicioCliente(ServicioClienteDTO servicioClienteDTO);
+        Task<Result<ServicioCliente>> deleteServicioCliente(int idServicio, int idContribuyente, int numeroServicio);
+        Task<Result<ServicioCliente>> updateServicioCliente(int idServicio, int idContribuyente, int numeroServicio, ServicioClienteDTO servicioCliente);
+        Task<Result<ServicioCliente>> getServicioClienteById(int idServicio, int idContribuyente, int numeroServicio);
+        Task<IEnumerable<ServicioCliente>> getServicioClienteAll(int idServicio);
+        Task<Result<ServicioCliente>> getServicioClienteByNumeroServicio(int numeroServicio);
+    }
+
     public class ServicioClienteService : IServicioClienteService
     {
-        private readonly TributoMunicipalContext _context;
-        public ServicioClienteService(TributoMunicipalContext context)
+        private readonly IServicioClienteRepository _servicioClienteRepository;
+        public ServicioClienteService(IServicioClienteRepository servicioClienteRepository)
         {
-            _context = context;
+            _servicioClienteRepository = servicioClienteRepository;
         }
         public async Task<Result<ServicioCliente>> addServicioCliente(ServicioClienteDTO servicioCliente)
         {
-            // Busqueda del Contribuyente + Servicio + Nro
-            var encontrado = await _context.ServicioClientes
-                .FirstOrDefaultAsync(x => x.IdServicio == servicioCliente.IdServicio 
-                && x.IdContribuyente == servicioCliente.IdContribuyente
-                && x.NumeroServicio == servicioCliente.NumeroServicio);
-            if (encontrado != null)
-            {
-                return Result<ServicioCliente>.Failure($"El servicio {servicioCliente.NumeroServicio} ya fue ingresado");
-            }
-            
-            var servicioClienteNuevo = new ServicioCliente 
-            { 
-                IdContribuyente = servicioCliente.IdContribuyente,
-                IdServicio = servicioCliente.IdServicio,
-                NumeroServicio = servicioCliente.NumeroServicio,
-                NumeroCliente = servicioCliente.NumeroCliente,
-                NumeroTelefono = servicioCliente .NumeroTelefono,
-                Estado = servicioCliente.Estado
-            };
-
-            await _context.ServicioClientes.AddAsync(servicioClienteNuevo);
-            await _context.SaveChangesAsync();
-
-            return Result<ServicioCliente>.Success(servicioClienteNuevo);
-
+            var resultado = await _servicioClienteRepository.addServicioCliente(servicioCliente);
+            return resultado;
         }
         public async Task<Result<ServicioCliente>> deleteServicioCliente(int idServicio, int idContribuyente, int numeroServicio)
         {
-            // Busqueda del Contribuyente + Servicio + Nro
-            var encontrado = await _context.ServicioClientes
-                .FirstOrDefaultAsync(x => x.IdServicio == idServicio
-                && x.IdContribuyente == idContribuyente
-                && x.NumeroServicio == numeroServicio);
-
-            if (encontrado == null) 
-            {
-                return Result<ServicioCliente>.Failure($"El servicio {numeroServicio} no se encuentra");
-            }
-            _context.ServicioClientes.Remove(encontrado);
-            await _context.SaveChangesAsync();
-            return Result<ServicioCliente>.Success(encontrado);
+            var resultado = await _servicioClienteRepository.deleteServicioCliente(idServicio, idContribuyente, numeroServicio);
+            return resultado;
         }
         public async Task<Result<ServicioCliente>> updateServicioCliente(int idServicio, int idContribuyente, int numeroServicio, ServicioClienteDTO servicioCliente)
         {
-            // Validez
-            if (idServicio != servicioCliente.IdServicio || idContribuyente != servicioCliente.IdContribuyente || numeroServicio != servicioCliente.NumeroServicio)
-            {
-                return Result<ServicioCliente>.Failure("Los parametros no se corresponden");
-            }
-
-            // Busqueda del Contribuyente + Servicio + Nro
-            var encontrado = await _context.ServicioClientes
-                .FirstOrDefaultAsync(x => x.IdServicio == servicioCliente.IdServicio
-                && x.IdContribuyente == servicioCliente.IdContribuyente
-                && x.NumeroServicio == servicioCliente.NumeroServicio);
-            if (encontrado != null)
-            {
-                encontrado.NumeroCliente = servicioCliente.NumeroCliente;
-                encontrado.NumeroTelefono = servicioCliente.NumeroTelefono;
-                encontrado.Estado = servicioCliente.Estado;
-
-                _context.Entry(encontrado).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-                return Result<ServicioCliente>.Success(encontrado);
-            }
-            else
-            {
-                return Result<ServicioCliente>.Failure($"El servicio {numeroServicio} no existe");
-            }
+            var resultado = await _servicioClienteRepository.updateServicioCliente(idServicio, idContribuyente, numeroServicio, servicioCliente);
+            return resultado;
         }
-        public async Task<IEnumerable<ServicioCliente>> getServicioClienteAll(int idservicio)
+        public async Task<IEnumerable<ServicioCliente>> getServicioClienteAll(int idServicio)
         {
-            var resultados = await _context.ServicioClientes
-                .Where(x=>x.IdServicio==idservicio)
-                .OrderBy(x=>x.NumeroServicio)
-                .ToListAsync();
+            var resultados = await _servicioClienteRepository.getServicioClienteAllByIdServicio(idServicio);
             return resultados;
         }
         public async Task<Result<ServicioCliente>> getServicioClienteById(int idServicio, int idContribuyente, int numeroServicio)
         {
-            var encontrado = await _context.ServicioClientes.FirstOrDefaultAsync(x => x.IdServicio == idServicio && 
-            x.IdContribuyente == idContribuyente &&
-            x.NumeroServicio == numeroServicio);
-            if (encontrado == null)
-            {
-                return Result<ServicioCliente>.Failure($"El servicio {numeroServicio} no existe ");
-            }
-            else
-            {
-                return Result<ServicioCliente>.Success(encontrado);
-            }
+            var resultado = await _servicioClienteRepository.getServicioClienteById(idServicio,idContribuyente,numeroServicio);
+            return resultado;
         }
 
+        public async Task<Result<ServicioCliente>> getServicioClienteByNumeroServicio(int numeroServicio)
+        {
+            var resultado = await _servicioClienteRepository.getServicioClienteByNumeroServicio(numeroServicio);
+            return resultado;
+        }
     }
 }

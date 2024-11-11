@@ -1,22 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ServiMun.Data;
-using ServiMun.Models;
+﻿using ServiMun.Models;
+using ServiMun.Repository;
 using ServiMun.Shared;
 
 namespace ServiMun.Services
 {
+
+    public interface IServicioService
+    {
+        Task<Result<Servicio>> AddServicio(ServicioDTO servicioDTO);
+        Task<Result<Servicio>> DeleteServicio(int id);
+        Task<Result<Servicio>> UpdateServicio(int id, ServicioDTO servicioDTO);
+        Task<Result<Servicio>> GetServicio(int id);
+        Task<IEnumerable<Servicio>> GetAllServicio();
+    }
+
     public class ServicioService : IServicioService
     {
-        private readonly TributoMunicipalContext _context;
+        private readonly IRepositoryResult<Servicio> _servicioRepository;
 
-        public ServicioService (TributoMunicipalContext context)
+        public ServicioService (IRepositoryResult<Servicio> servicioRepository)
         {
-            _context = context;
+            _servicioRepository = servicioRepository;   
         }
 
         public async Task<Result<Servicio>> AddServicio(ServicioDTO servicioDTO)
         {
-            var encontrado = await _context.Servicios.FirstOrDefaultAsync(x => x.IdServicio == servicioDTO.IdServicio);
+            var encontrado = await _servicioRepository.GetById(servicioDTO.IdServicio);
 
             if (encontrado != null) 
             {
@@ -31,73 +40,52 @@ namespace ServiMun.Services
                 Estado = servicioDTO.Estado
             };
 
-            await _context.Servicios.AddAsync(servicio);
-            await _context.SaveChangesAsync();
+            var resultado = await _servicioRepository.AddItem(servicio);
 
-            return Result<Servicio>.Success(servicio);
+            return resultado;
         }
 
         public async Task<Result<Servicio>> DeleteServicio(int id)
         {
-            var encontrado = _context.Servicios.FirstOrDefault(x=> x.IdServicio == id);
-            if (encontrado != null)
-            {
-                _context.Servicios.Remove(encontrado);
-                await _context.SaveChangesAsync();
-                return Result<Servicio>.Success(encontrado);
-            }
-            else
-            {
-                return Result<Servicio>.Failure("El servicio no se pudo borrar");
-            }
+            var resultado = await _servicioRepository.DeleteItem(id);
+            return resultado;
         }
 
         public async Task<Result<Servicio>> UpdateServicio(int id, ServicioDTO servicioDTO)
         {
-            var encontrado = await _context.Servicios.FirstOrDefaultAsync(x=>x.IdServicio == id);
-            if (encontrado == null)
+            var encontrado = await _servicioRepository.GetById(id);
+            if (!encontrado._succes)
             {
-                return Result<Servicio>.Failure("El servicio a modificar no fue encontrado");
+                return encontrado;
             }
             
-            if(encontrado.IdServicio != servicioDTO.IdServicio)
+            if(encontrado._value.IdServicio != servicioDTO.IdServicio)
             {
                 return Result<Servicio>.Failure("El id de servicio a modificar no corresponde al de la modificacion");
             }
 
             // Si hubiera mapeo no seria necesario tanto codigo!!!
-            encontrado.NombreServicio = servicioDTO.NombreServicio;
-            encontrado.Sintetico = servicioDTO.Sintetico;
-            encontrado.Estado = servicioDTO.Estado;
+            encontrado._value.NombreServicio = servicioDTO.NombreServicio;
+            encontrado._value.Sintetico = servicioDTO.Sintetico;
+            encontrado._value.Estado = servicioDTO.Estado;
 
-            _context.Entry(encontrado).State = EntityState.Modified;
+            var resultado = await _servicioRepository.UpdateItem(encontrado._value);
 
-            await _context.SaveChangesAsync();
-
-            return Result<Servicio>.Success(encontrado);
+            return resultado;
 
         }
 
         public async Task<Result<Servicio>> GetServicio(int id)
         {
-            var encontrado = await _context.Servicios.FirstOrDefaultAsync(x=>x.IdServicio == id);
-            if (encontrado == null)
-            {
-                return Result<Servicio>.Failure("No se encuentra el servicio buscado");
-            }
-            return Result<Servicio>.Success(encontrado);
+            var encontrado = await _servicioRepository.GetById(id);
+            return encontrado;
         }
 
         public async Task<IEnumerable<Servicio>> GetAllServicio()
         {
-            var resultados = await _context.Servicios.ToListAsync();
+            var resultados = await _servicioRepository.GetAll();
             return resultados;
             
-        }
-
-        public async Task<IEnumerable<Servicio>> GetAllBySintetico(string sintetico)
-        {
-            return await _context.Servicios.Where(x => x.Sintetico == sintetico).ToListAsync();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiMun.Models;
 using ServiMun.Services;
+using ServiMun.Shared;
 
 namespace ServiMun.Controllers
 {
@@ -14,7 +15,7 @@ namespace ServiMun.Controllers
             _service = service;
         }
         [HttpPost]
-        public async Task<ActionResult<Contribuyente>> AltaNuevoContribuyente([FromBody] ContribuyenteDTO contribuyenteDTO)
+        public async Task<ActionResult<Result<Contribuyente>>> AltaNuevoContribuyente([FromBody] ContribuyenteDTO contribuyenteDTO)
         {
             if (contribuyenteDTO == null)
             {
@@ -32,15 +33,15 @@ namespace ServiMun.Controllers
                 SexoContribuyente = contribuyenteDTO.SexoContribuyente
             };
 
-            var nuevoContribuyente = await _service.AltaNuevoContribuyente(contribuyente);
+            var nuevoContribuyente = await _service.AddContribuyente(contribuyente);
 
-            return CreatedAtAction(nameof(RecuperacionContribuyente), new { id = nuevoContribuyente.IdContribuyente }, nuevoContribuyente);
+            return CreatedAtAction(nameof(RecuperacionContribuyente), new { id = nuevoContribuyente._value.IdContribuyente }, nuevoContribuyente);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> BajaContribuyente(int id)
         {
-            var result = await _service.BajaContribuyente(id);
-            if (!result) return NotFound();
+            var result = await _service.DeleteContribuyente(id);
+            if (!result._succes) return NotFound();
             return NoContent();
         }
         [HttpPut("{id}")]
@@ -65,29 +66,29 @@ namespace ServiMun.Controllers
                 SexoContribuyente = contribuyenteDTO.SexoContribuyente
             };
 
-            await _service.ModificacionContribuyente(contribuyente);
+            await _service.UpdateContribuyente(contribuyente);
 
             return NoContent();
         }
         [HttpGet("porId/{id}")]
-        public async Task<ActionResult<Contribuyente>> RecuperacionContribuyente(int id)
+        public async Task<ActionResult<Result<Contribuyente>>> RecuperacionContribuyente(int id)
         {
-            var contribuyente = await _service.RecuperacionContribuyente(id);
-            if (contribuyente == null) return NotFound();
-            return contribuyente;
+            var contribuyente = await _service.GetContribuyenteById(id);
+            if (!contribuyente._succes) return NotFound();
+            return Ok(contribuyente);
         }
         [HttpGet("porNumero/{NumeroDocumentoContribuyente}")]
         public async Task<ActionResult<Contribuyente>> RecuperacionContribuyente(string NumeroDocumentoContribuyente)
         {
-            var contribuyente = await _service.RecuperacionContribuyentePorNumero(NumeroDocumentoContribuyente);
-            if (contribuyente == null) return NotFound();
+            var contribuyente = await _service.GetContribuyenteByNumero(NumeroDocumentoContribuyente);
+            if (contribuyente.Count()==0) return NotFound();
             var cont = contribuyente.FirstOrDefault();
-            return cont;
+            return Ok(cont);
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contribuyente>>> RecuperacionTodosContribuyente()
         {
-            var contribuyentes = await _service.RecuperacionTodosContribuyente();
+            var contribuyentes = await _service.GetAllContribuyente();
             return Ok(contribuyentes);
         }
     }

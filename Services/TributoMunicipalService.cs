@@ -1,51 +1,55 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiMun.Data;
 using ServiMun.Models;
+using ServiMun.Repository;
+using ServiMun.Shared;
 
 namespace ServiMun.Services
 {
-    public class TributoMunicipalService : ITributoMunicipalService
+    public interface ITributoMunicipalService
     {
-        private readonly TributoMunicipalContext _context;
-
-        public TributoMunicipalService(TributoMunicipalContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<TributoMunicipal> AltaNuevoTributoMunicipal(TributoMunicipal tributo)
-        {
-            _context.TributosMunicipales.Add(tributo);
-            await _context.SaveChangesAsync();
-            return tributo;
-        }
-
-        public async Task<bool> BajaTributoMunicipal(int id)
-        {
-            var tributo = await _context.TributosMunicipales.FindAsync(id);
-            if (tributo == null) return false;
-
-            _context.TributosMunicipales.Remove(tributo);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<TributoMunicipal> ModificacionTributoMunicipal(TributoMunicipal tributo)
-        {
-            _context.Entry(tributo).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return tributo;
-        }
-
-        public async Task<TributoMunicipal> RecuperacionTributoMunicipal(int id)
-        {
-            return await _context.TributosMunicipales.FindAsync(id);
-        }
-
-        public async Task<IEnumerable<TributoMunicipal>> RecuperacionTodosTributoMunicipal()
-        {
-            return await _context.TributosMunicipales.ToListAsync();
-        }
+        Task<Result<TributoMunicipal>> AddTributoMunicipal(TributoMunicipal tributo);
+        Task<Result<TributoMunicipal>> DeleteTributoMunicipal(int id);
+        Task<Result<TributoMunicipal>> UpdateTributoMunicipal(TributoMunicipal tributo);
+        Task<Result<TributoMunicipal>> GetTributoMunicipalById(int id);
+        Task<IEnumerable<TributoMunicipal>> GetAllTributoMunicipal();
     }
 
+    public class TributoMunicipalService : ITributoMunicipalService
+    {
+        private readonly IRepositoryResult<TributoMunicipal> _tributo;
+
+        public TributoMunicipalService(IRepositoryResult<TributoMunicipal> tributo)
+        {
+            _tributo = tributo;
+        }
+
+        public async Task<Result<TributoMunicipal>> AddTributoMunicipal(TributoMunicipal tributo)
+        {
+            var resultado = await _tributo.AddItem(tributo);
+            return resultado;
+        }
+
+        public async Task<Result<TributoMunicipal>> DeleteTributoMunicipal(int id)
+        {
+            var resultado = await _tributo.DeleteItem(id);
+            return resultado;
+        }
+
+        public async Task<Result<TributoMunicipal>> UpdateTributoMunicipal(TributoMunicipal tributo)
+        {
+            var resultado = await _tributo.UpdateItem(tributo);
+            return resultado;
+        }
+
+        public async Task<Result<TributoMunicipal>> GetTributoMunicipalById(int id)
+        {
+            return await _tributo.GetById(id);
+        }
+
+        public async Task<IEnumerable<TributoMunicipal>> GetAllTributoMunicipal()
+        {
+            return await _tributo.GetAll();
+        }
+    }
 }

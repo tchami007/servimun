@@ -16,30 +16,6 @@ namespace ServiMun.Controllers
         {
             _servicioClienteService = servicioClienteService;
         }
-
-        [HttpGet("{idServicio}/{idContribuyente}/{numeroServicio}")]
-        public async Task<ActionResult<ServicioCliente>> GetServicioById(int idServicio, int idContribuyente, int numeroServicio)
-        {
-            var resultado = await _servicioClienteService.getServicioClienteById(idServicio, idContribuyente, numeroServicio);
-            if (resultado._succes)
-            {
-                return Ok(resultado);
-            }
-            else
-            {
-                return BadRequest(resultado);
-            }
-
-        }
-
-        [HttpGet ("{idServicio}")]
-        public async Task<ActionResult<IEnumerable<ServicioCliente>>> GetAllServicioCliente(int idServicio)
-        {
-            var resultado = await _servicioClienteService.getServicioClienteAll(idServicio);
-            return Ok(resultado);
-
-        }
-
         [HttpPost]
         public async Task<ActionResult<ServicioCliente>> AddServicioCliente([FromBody] ServicioClienteDTO servicioClienteDTO)
         {
@@ -54,7 +30,6 @@ namespace ServiMun.Controllers
                 return BadRequest(resultado._errorMessage);
             }
         }
-
         [HttpPut("{idServicio}/{idContribuyente}")]
         public async Task<ActionResult> UpdateServicioCliente(int idServicio, int idContribuyente , [FromBody]ServicioClienteDTO servicioClienteDTO)
         {
@@ -84,6 +59,27 @@ namespace ServiMun.Controllers
             {
                 return BadRequest(resultado._errorMessage);
             }
+        }
+        [HttpGet("{idServicio}/{idContribuyente}/{numeroServicio}")]
+        public async Task<ActionResult<ServicioCliente>> GetServicioById(int idServicio, int idContribuyente, int numeroServicio)
+        {
+            var resultado = await _servicioClienteService.getServicioClienteById(idServicio, idContribuyente, numeroServicio);
+            if (resultado._succes)
+            {
+                return Ok(resultado);
+            }
+            else
+            {
+                return BadRequest(resultado);
+            }
+
+        }
+        [HttpGet("{idServicio}")]
+        public async Task<ActionResult<IEnumerable<ServicioCliente>>> GetAllServicioCliente(int idServicio)
+        {
+            var resultado = await _servicioClienteService.getServicioClienteAll(idServicio);
+            return Ok(resultado);
+
         }
     }
 }

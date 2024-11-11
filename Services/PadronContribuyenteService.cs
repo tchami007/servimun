@@ -1,56 +1,60 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiMun.Data;
 using ServiMun.Models;
+using ServiMun.Repository;
+using ServiMun.Shared;
+using System.Linq;
 
 namespace ServiMun.Services
 {
+
+    public interface IPadronContribuyenteService
+    {
+        Task<Result<PadronContribuyente>> AddPadronContribuyente(PadronContribuyente padronContribuyente);
+        Task<Result<PadronContribuyente>> DeletePadronContribuyente(int idContribuyente, int idTributoMunicipal);
+        Task<Result<PadronContribuyente>> UpdatePadronContribuyente(PadronContribuyenteGetDTO padronGetDTO);
+        Task<Result<PadronContribuyente>> GetPadronContribuyentePadronById(int idContribuyente, int idTributoMunicipal);
+        Task<IEnumerable<PadronContribuyente>> GetAllPadronContribuyenteByIdTributo(int idTributoMunicipal);
+        Task<Result<PadronContribuyente>> GetPadronContribuyentePadronByNumeroPadron(int numeroPadron);
+    }
+
     public class PadronContribuyenteService : IPadronContribuyenteService
     {
-        private readonly TributoMunicipalContext _context;
+        private readonly IPadronContribuyenteRepository _padronContribuyente;
+        private readonly IPadronBoletaRepository _padronBoleta;
 
-        public PadronContribuyenteService(TributoMunicipalContext context)
+        public PadronContribuyenteService(IPadronContribuyenteRepository padronContribuyente, IPadronBoletaRepository padronBoleta)
         {
-            _context = context;
+            _padronContribuyente = padronContribuyente;
+            _padronBoleta = padronBoleta;
         }
 
-        public async Task<PadronContribuyente> AltaContribuyentePadron(PadronContribuyente padronContribuyente)
+        public async Task<Result<PadronContribuyente>> AddPadronContribuyente(PadronContribuyente padronContribuyente)
         {
-            _context.PadronContribuyentes.Add(padronContribuyente);
-            await _context.SaveChangesAsync();
-            return padronContribuyente;
+            var resultado = await _padronContribuyente.AddItem(padronContribuyente);
+            return resultado;
         }
 
-        public async Task<bool> BajaContribuyentePadron(int idContribuyente, int idTributoMunicipal)
+        public async Task<Result<PadronContribuyente>> DeletePadronContribuyente(int idContribuyente, int idTributoMunicipal)
         {
-            var padron = await _context.PadronContribuyentes.FindAsync(idContribuyente, idTributoMunicipal);
-            if (padron == null) return false;
-
-            _context.PadronContribuyentes.Remove(padron);
-            await _context.SaveChangesAsync();
-            return true;
+            var resultado = await _padronContribuyente.DeleteItem(idContribuyente, idTributoMunicipal);
+            return resultado;
         }
 
-
-        /// <summary>
-        /// Modifica un elemento de la asociacion Padron-Contribuyente
-        /// </summary>
-        /// <param name="padronDTO">Elemento de tipo PadronContribuyenteGetDTO de transferencia de la asociacion</param>
-        /// <returns>Valor booleano qie indica si se realizo la modificacion</returns>
-        public async Task<bool> ModificacionContribuyentePadron(PadronContribuyenteGetDTO padronDTO)
+        public async Task<Result<PadronContribuyente>> UpdatePadronContribuyente(PadronContribuyenteGetDTO padronDTO)
         {
             // Verificar si el NumeroPadron existe en PadronBoleta
-            var padronExists = await _context.PadronBoletas.AnyAsync(pb => pb.NumeroPadron == padronDTO.NumeroPadron);
-            if (padronExists)
+            var padronExists = await _padronBoleta.GetAllByNumeroPadron(padronDTO.NumeroPadron);
+            if (padronExists.Count()>0)
             {
-                return false;
+                return Result<PadronContribuyente>.Failure("Padron Contribuyente no identificado");
             }
 
             // Eliminar el registro existente
-            var existingPadron = await _context.PadronContribuyentes.FindAsync(padronDTO.IdContribuyente, padronDTO.IdTributoMunicipal);
+            var existingPadron = await _padronContribuyente.GetById(padronDTO.IdContribuyente, padronDTO.IdTributoMunicipal);
             if (existingPadron != null)
             {
-                _context.PadronContribuyentes.Remove(existingPadron);
-                await _context.SaveChangesAsync();
+                await _padronContribuyente.DeleteItem(padronDTO.IdContribuyente, padronDTO.IdContribuyente);
             }
 
             // Conversion de DTO a Model
@@ -63,84 +67,26 @@ namespace ServiMun.Services
             };
 
             // Agregar el nuevo registro
-            _context.PadronContribuyentes.Add(pad);
-            await _context.SaveChangesAsync();
-            return true;
+            await _padronContribuyente.AddItem(pad);
+            return Result<PadronContribuyente>.Success(pad);
         }
 
-        public async Task<IEnumerable<PadronContribuyenteGetDTO>> RecuperaPadronContribuyente(string numeroDocumentoContribuyente)
+        public async Task<Result<PadronContribuyente>> GetPadronContribuyentePadronById(int idContribuyente, int idTributoMunicipal)
         {
-            return await _context.PadronContribuyentes
-                .Include(p => p.Contribuyente)
-                .Include(p => p.TributoMunicipal)
-                .Select(p=> new PadronContribuyenteGetDTO {
-                    IdContribuyente = p.IdContribuyente,
-                    IdTributoMunicipal = p.IdTributoMunicipal,
-                    NumeroDocumentoContribuyente = p.Contribuyente.NumeroDocumentoContribuyente,
-                    ApellidoNombreContribuyente = p.Contribuyente.ApellidoNombreContribuyente,
-                    NumeroPadron = p.NumeroPadron,
-                    Estado = p.Estado,
-                    TributoDescripcion = p.TributoMunicipal.NombreTributo
-                })
-                .Where(p => p.NumeroDocumentoContribuyente == numeroDocumentoContribuyente)
-                .ToListAsync();
+            var resultado = await _padronContribuyente.GetById(idContribuyente, idTributoMunicipal);
+            return resultado;
         }
 
-        public async Task<IEnumerable<PadronContribuyenteGetDTO>> RecuperaContribuyentePadron(int numeroPadron)
+        public async Task<IEnumerable<PadronContribuyente>> GetAllPadronContribuyenteByIdTributo(int idTributoMunicipal)
         {
-            return await _context.PadronContribuyentes
-                .Include(p => p.Contribuyente)
-                .Include(p => p.TributoMunicipal)
-                .Select(p=>new PadronContribuyenteGetDTO {
-
-                    IdContribuyente = p.IdContribuyente,
-                    IdTributoMunicipal= p.IdTributoMunicipal,
-                    NumeroDocumentoContribuyente = p.Contribuyente.NumeroDocumentoContribuyente,
-                    ApellidoNombreContribuyente = p.Contribuyente.ApellidoNombreContribuyente,
-                    NumeroPadron= p.NumeroPadron,
-                    Estado = p.Estado,
-                    TributoDescripcion = p.TributoMunicipal.NombreTributo
-                })
-                .Where(p => p.NumeroPadron == numeroPadron)
-                .ToListAsync();
+            var resultado = await _padronContribuyente.GetAllByIdTributo(idTributoMunicipal);
+            return resultado;
         }
 
-        public async Task<IEnumerable<PadronContribuyenteGetDTO>> RecuperarContribuyentePadronId(int idContribuyente, int idTributoMunicipal)
-        {
-            return await _context.PadronContribuyentes
-                .Include(pc => pc.Contribuyente)
-                .Include(pc => pc.TributoMunicipal)
-                .Select(pc => new PadronContribuyenteGetDTO 
-                    { 
-                        IdContribuyente=pc.IdContribuyente,
-                        IdTributoMunicipal=pc.IdTributoMunicipal,
-                        NumeroDocumentoContribuyente = pc.Contribuyente.NumeroDocumentoContribuyente,
-                        ApellidoNombreContribuyente = pc.Contribuyente.ApellidoNombreContribuyente,
-                        NumeroPadron = pc.NumeroPadron,
-                        Estado=pc.Estado,
-                        TributoDescripcion = pc.TributoMunicipal.NombreTributo
-                })
-                .Where(pc => pc.IdContribuyente == idContribuyente && pc.IdTributoMunicipal == idTributoMunicipal)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<PadronContribuyenteGetDTO>> RecuperarPadronTributo(int idTributoMunicipal)
-        {
-            return await _context.PadronContribuyentes
-             .Include(pc => pc.Contribuyente)
-             .Include(pc => pc.TributoMunicipal)
-             .Select(pc => new PadronContribuyenteGetDTO
-             {
-                 IdContribuyente = pc.IdContribuyente,
-                 IdTributoMunicipal = pc.IdTributoMunicipal,
-                 NumeroDocumentoContribuyente = pc.Contribuyente.NumeroDocumentoContribuyente,
-                 ApellidoNombreContribuyente = pc.Contribuyente.ApellidoNombreContribuyente,
-                 NumeroPadron = pc.NumeroPadron,
-                 Estado = pc.Estado,
-                 TributoDescripcion = pc.TributoMunicipal.NombreTributo
-             })
-             .Where(pc => pc.IdTributoMunicipal == idTributoMunicipal)
-             .ToListAsync();
+        public async Task<Result<PadronContribuyente>> GetPadronContribuyentePadronByNumeroPadron(int numeroPadron) 
+        { 
+            var resultado = await _padronContribuyente.GetByNumeroPadron(numeroPadron);
+            return resultado;
         }
     }
 

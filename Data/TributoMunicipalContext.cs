@@ -17,6 +17,10 @@ namespace ServiMun.Data
         public DbSet<ServicioCliente> ServicioClientes { get; set; }
         public DbSet<ServicioBoleta> ServicioBoletas { get; set; }
 
+        // Movimientos
+        public DbSet<Movimiento> Movimientos { get; set; }
+        public DbSet<ComprobanteControl> ComprobantesControl { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -146,6 +150,43 @@ namespace ServiMun.Data
                 .WithMany(pc => pc.ServicioBoletas)
                 .HasForeignKey(pb => pb.NumeroServicio)
                 .HasPrincipalKey(pc => pc.NumeroServicio);
+
+            //----------------------
+            // Movimientos
+            //----------------------
+
+            // Configuración para Movimiento
+            modelBuilder.Entity <Movimiento>(entity =>
+            {
+                entity.HasKey(e => e.IdMovimiento);
+                entity.Property(e => e.FechaMovimiento)
+                    .IsRequired();
+                entity.Property(e => e.FechaReal)
+                    .IsRequired();
+                entity.Property(e => e.Tipo)
+                    .IsRequired()
+                    .HasMaxLength(10);
+                entity.Property(e => e.Numero)
+                    .IsRequired();
+                entity.Property(e => e.Periodo)
+                    .IsRequired();
+                entity.Property(e => e.Contrasiento)
+                    .HasMaxLength(1);
+            });
+
+            modelBuilder.Entity<Movimiento>()
+                .HasOne(m => m.Tributo)
+                .WithMany(t => t.Movimientos) // Relación inversa
+                .HasForeignKey(m => m.IdTributo);
+
+            modelBuilder.Entity<Movimiento>()
+                .HasOne(m => m.Servicio)
+                .WithMany(s => s.Movimientos) // Relación inversa
+                .HasForeignKey(m => m.IdServicio);
+
+            // Configuración adicional de la entidad ComprobanteControl, si es necesario
+            modelBuilder.Entity<ComprobanteControl>()
+                        .HasKey(c => c.IdControl);
 
             base.OnModelCreating(modelBuilder);
         }
