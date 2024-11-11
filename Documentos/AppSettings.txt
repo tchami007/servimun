@@ -1,3 +1,7 @@
 Para somee
 
     "DefaultConnection": "Server=TributoDB.mssql.somee.com;Database=TributoDB;user id=<usuario>;pwd=<clave>;",
+
+Para Local (Windows Authentication)
+
+    "DefaultConnection": "Server=<Servicdor>;Database=<Database>;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;"
