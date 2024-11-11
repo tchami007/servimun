@@ -18,3 +18,7 @@ Los nuevos servicios de la webAPI incluyen las entidades
 - ServicioCliente --> Servicios CRUD
 - ServicioBoleta --> Servicios CRUD
 
+## Agregado 11/11/2024 - Cambio de arquitectura
+
+Se agrega una capa de repositorio, moviendose la programacion de la capa intermedia a esa capa. La capa de servicio ahora la usamos para los casos de uso. Se crea el controlador de pagos (PagoController) y se mueven ahi los casos de uso de pago que estaban en PagoBoletaService y ServicioBoletaService.
+
